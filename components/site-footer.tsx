@@ -1,5 +1,5 @@
-import { GitFork } from "lucide-react"
-import Link from "next/link"
+import { GitFork } from "lucide-react";
+import Link from "next/link";
 
 export function SiteFooter() {
   return (
@@ -8,10 +8,11 @@ export function SiteFooter() {
         <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
           <GitFork className="h-6 w-6" />
           <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-            Built for game developers to learn and implement design patterns.
+            Built for game developers to implement design patterns of
+            videogames.
           </p>
         </div>
-        <div className="flex flex-col items-center gap-4 md:flex-row md:gap-6">
+        {/* <div className="flex flex-col items-center gap-4 md:flex-row md:gap-6">
           <nav className="flex gap-4 sm:gap-6">
             <Link
               href="/about"
@@ -32,9 +33,8 @@ export function SiteFooter() {
               Privacy
             </Link>
           </nav>
-        </div>
+        </div> */}
       </div>
     </footer>
-  )
+  );
 }
-
