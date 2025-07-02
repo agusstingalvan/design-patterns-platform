@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
-import { ArrowLeft, Code2, GitFork } from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
+import { ArrowLeft, Code2, GitFork } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function StatePatternPage() {
   return (
@@ -25,7 +25,8 @@ export default function StatePatternPage() {
                   State Pattern
                 </h1>
                 <p className="text-muted-foreground">
-                  Allow an object to alter its behavior when its internal state changes
+                  Allow an object to alter its behavior when its internal state
+                  changes
                 </p>
               </div>
             </div>
@@ -38,97 +39,131 @@ export default function StatePatternPage() {
               </TabsList>
               <TabsContent value="overview" className="space-y-6 py-4">
                 <div className="space-y-4">
-                  <h2 className="text-2xl font-bold">What is the State Pattern?</h2>
+                  <h2 className="text-2xl font-bold">
+                    What is the State Pattern?
+                  </h2>
                   <p>
-                    The State pattern is a behavioral design pattern that allows an object to change its behavior when
-                    its internal state changes. The pattern encapsulates state-specific behavior into separate state
-                    classes and delegates behavior to the current state object.
+                    The State pattern is a behavioral design pattern that allows
+                    an object to change its behavior when its internal state
+                    changes. The pattern encapsulates state-specific behavior
+                    into separate state classes and delegates behavior to the
+                    current state object.
                   </p>
                   <p>
-                    This pattern is particularly valuable in game development, where objects frequently need to change
-                    their behavior based on their current state, such as characters transitioning between idle, walking,
-                    running, jumping, or attacking states.
+                    This pattern is particularly valuable in game development,
+                    where objects frequently need to change their behavior based
+                    on their current state, such as characters transitioning
+                    between idle, walking, running, jumping, or attacking
+                    states.
                   </p>
                 </div>
                 <div className="space-y-4">
                   <h2 className="text-2xl font-bold">When to Use It</h2>
                   <ul className="list-disc list-inside space-y-2">
                     <li>
-                      When an object's behavior depends on its state, and it must change its behavior at runtime
-                      depending on that state
+                      When an object's behavior depends on its state, and it
+                      must change its behavior at runtime depending on that
+                      state
                     </li>
                     <li>
-                      When operations have large, multipart conditional statements that depend on the object's state
+                      When operations have large, multipart conditional
+                      statements that depend on the object's state
                     </li>
                     <li>When state transitions are explicit and complex</li>
                     <li>
-                      When you want to avoid a proliferation of state-specific if/else or switch statements throughout
-                      your code
+                      When you want to avoid a proliferation of state-specific
+                      if/else or switch statements throughout your code
                     </li>
                   </ul>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="text-2xl font-bold">Common Use Cases in Games</h2>
+                  <h2 className="text-2xl font-bold">
+                    Common Use Cases in Games
+                  </h2>
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="border rounded-lg p-4">
                       <h3 className="font-bold mb-2">Character Controllers</h3>
                       <p className="text-sm text-muted-foreground">
-                        Managing player or NPC states like idle, walking, running, jumping, attacking, and taking
-                        damage.
+                        Managing player or NPC states like idle, walking,
+                        running, jumping, attacking, and taking damage.
                       </p>
                     </div>
                     <div className="border rounded-lg p-4">
                       <h3 className="font-bold mb-2">Enemy AI</h3>
                       <p className="text-sm text-muted-foreground">
-                        Controlling enemy behavior states such as patrolling, chasing, attacking, and retreating.
+                        Controlling enemy behavior states such as patrolling,
+                        chasing, attacking, and retreating.
                       </p>
                     </div>
                     <div className="border rounded-lg p-4">
                       <h3 className="font-bold mb-2">Game Flow</h3>
                       <p className="text-sm text-muted-foreground">
-                        Managing game states like menu, playing, paused, game over, and victory screens.
+                        Managing game states like menu, playing, paused, game
+                        over, and victory screens.
                       </p>
                     </div>
                     <div className="border rounded-lg p-4">
                       <h3 className="font-bold mb-2">Interactive Objects</h3>
                       <p className="text-sm text-muted-foreground">
-                        Controlling states of doors (locked, unlocked, opening, closing), switches, and other
-                        interactive elements.
+                        Controlling states of doors (locked, unlocked, opening,
+                        closing), switches, and other interactive elements.
                       </p>
                     </div>
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="text-2xl font-bold">Advantages and Disadvantages</h2>
+                  <h2 className="text-2xl font-bold">
+                    Advantages and Disadvantages
+                  </h2>
                   <div className="grid gap-6 md:grid-cols-2">
                     <div className="space-y-2">
                       <h3 className="font-bold">Advantages</h3>
                       <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                        <li>Eliminates conditional statements for state-specific behavior</li>
-                        <li>Organizes state-specific code into separate classes</li>
+                        <li>
+                          Eliminates conditional statements for state-specific
+                          behavior
+                        </li>
+                        <li>
+                          Organizes state-specific code into separate classes
+                        </li>
                         <li>Makes state transitions explicit</li>
-                        <li>Makes adding new states easier without changing existing state classes</li>
-                        <li>Simplifies code by removing large switch statements</li>
+                        <li>
+                          Makes adding new states easier without changing
+                          existing state classes
+                        </li>
+                        <li>
+                          Simplifies code by removing large switch statements
+                        </li>
                       </ul>
                     </div>
                     <div className="space-y-2">
                       <h3 className="font-bold">Disadvantages</h3>
                       <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                        <li>Can be overkill for simple state management with few states</li>
+                        <li>
+                          Can be overkill for simple state management with few
+                          states
+                        </li>
                         <li>Increases the number of classes in your project</li>
                         <li>Requires careful planning of state transitions</li>
-                        <li>May introduce complexity if states share common behavior</li>
+                        <li>
+                          May introduce complexity if states share common
+                          behavior
+                        </li>
                         <li>Can be challenging to debug state transitions</li>
                       </ul>
                     </div>
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="text-2xl font-bold">State Pattern vs. State Machines</h2>
+                  <h2 className="text-2xl font-bold">
+                    State Pattern vs. State Machines
+                  </h2>
                   <p>
-                    The State pattern is often used to implement a Finite State Machine (FSM) in object-oriented
-                    programming. While an FSM defines the states and transitions, the State pattern provides a way to
-                    implement this in code by encapsulating each state's behavior in a separate class.
+                    The State pattern is often used to implement a Finite State
+                    Machine (FSM) in object-oriented programming. While an FSM
+                    defines the states and transitions, the State pattern
+                    provides a way to implement this in code by encapsulating
+                    each state's behavior in a separate class.
                   </p>
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="border rounded-lg p-4">
@@ -137,7 +172,9 @@ export default function StatePatternPage() {
                         <li>Object-oriented implementation approach</li>
                         <li>Encapsulates state behavior in classes</li>
                         <li>Focuses on behavior delegation</li>
-                        <li>States can be added/modified without changing context</li>
+                        <li>
+                          States can be added/modified without changing context
+                        </li>
                       </ul>
                     </div>
                     <div className="border rounded-lg p-4">
@@ -146,7 +183,9 @@ export default function StatePatternPage() {
                         <li>Conceptual model of states and transitions</li>
                         <li>Can be implemented in various ways</li>
                         <li>Focuses on state transitions</li>
-                        <li>Often implemented with enums and switch statements</li>
+                        <li>
+                          Often implemented with enums and switch statements
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -154,7 +193,9 @@ export default function StatePatternPage() {
               </TabsContent>
               <TabsContent value="implementation" className="space-y-6 py-4">
                 <div className="space-y-4">
-                  <h2 className="text-2xl font-bold">Implementation in Unity (C#)</h2>
+                  <h2 className="text-2xl font-bold">
+                    Implementation in Unity (C#)
+                  </h2>
                   <div className="border rounded-lg p-4 bg-muted/30">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="font-bold flex items-center">
@@ -510,7 +551,9 @@ public class EnemyAttackState : IEnemyState
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="text-2xl font-bold">Implementation in Godot (GDScript)</h2>
+                  <h2 className="text-2xl font-bold">
+                    Implementation in Godot (GDScript)
+                  </h2>
                   <div className="border rounded-lg p-4 bg-muted/30">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="font-bold flex items-center">
@@ -683,34 +726,40 @@ func patrol(enemy, delta):
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="text-2xl font-bold">Key Implementation Considerations</h2>
+                  <h2 className="text-2xl font-bold">
+                    Key Implementation Considerations
+                  </h2>
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="border rounded-lg p-4">
                       <h3 className="font-bold mb-2">State Interface</h3>
                       <p className="text-sm text-muted-foreground">
-                        Define a clear interface for all states with methods for entering, updating, and exiting the
-                        state, as well as handling events.
+                        Define a clear interface for all states with methods for
+                        entering, updating, and exiting the state, as well as
+                        handling events.
                       </p>
                     </div>
                     <div className="border rounded-lg p-4">
                       <h3 className="font-bold mb-2">Context Class</h3>
                       <p className="text-sm text-muted-foreground">
-                        The context class (e.g., EnemyController) maintains a reference to the current state and
-                        delegates state-specific behavior to it.
+                        The context class (e.g., EnemyController) maintains a
+                        reference to the current state and delegates
+                        state-specific behavior to it.
                       </p>
                     </div>
                     <div className="border rounded-lg p-4">
                       <h3 className="font-bold mb-2">State Transitions</h3>
                       <p className="text-sm text-muted-foreground">
-                        Clearly define when and how state transitions occur. States can trigger transitions themselves,
-                        or the context can handle them.
+                        Clearly define when and how state transitions occur.
+                        States can trigger transitions themselves, or the
+                        context can handle them.
                       </p>
                     </div>
                     <div className="border rounded-lg p-4">
                       <h3 className="font-bold mb-2">State Data</h3>
                       <p className="text-sm text-muted-foreground">
-                        Decide whether state-specific data should be stored in the state classes or in the context
-                        class, based on your specific needs.
+                        Decide whether state-specific data should be stored in
+                        the state classes or in the context class, based on your
+                        specific needs.
                       </p>
                     </div>
                   </div>
@@ -718,7 +767,9 @@ func patrol(enemy, delta):
               </TabsContent>
               <TabsContent value="examples" className="space-y-6 py-4">
                 <div className="space-y-4">
-                  <h2 className="text-2xl font-bold">Player Character State Machine</h2>
+                  <h2 className="text-2xl font-bold">
+                    Player Character State Machine
+                  </h2>
                   <div className="border rounded-lg p-4 bg-muted/30">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="font-bold flex items-center">
@@ -1461,10 +1512,16 @@ public class GameStateManager : MonoBehaviour
               </TabsContent>
               <TabsContent value="diagram" className="space-y-6 py-4">
                 <div className="space-y-4">
-                  <h2 className="text-2xl font-bold">State Pattern Structure</h2>
+                  <h2 className="text-2xl font-bold">
+                    State Pattern Structure
+                  </h2>
                   <div className="border rounded-lg p-6 bg-muted/30 flex justify-center">
                     <div className="max-w-lg">
-                      <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" className="w-full">
+                      <svg
+                        viewBox="0 0 600 400"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-full"
+                      >
                         {/* Context */}
                         <rect
                           x="250"
@@ -1486,8 +1543,20 @@ public class GameStateManager : MonoBehaviour
                         >
                           Context
                         </text>
-                        <line x1="250" y1="90" x2="370" y2="90" stroke="currentColor" strokeWidth="2" />
-                        <text x="260" y="110" dominantBaseline="middle" fontSize="14">
+                        <line
+                          x1="250"
+                          y1="90"
+                          x2="370"
+                          y2="90"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
+                        <text
+                          x="260"
+                          y="110"
+                          dominantBaseline="middle"
+                          fontSize="14"
+                        >
                           - state: State
                         </text>
 
@@ -1512,8 +1581,20 @@ public class GameStateManager : MonoBehaviour
                         >
                           State
                         </text>
-                        <line x1="250" y1="240" x2="370" y2="240" stroke="currentColor" strokeWidth="2" />
-                        <text x="260" y="260" dominantBaseline="middle" fontSize="14">
+                        <line
+                          x1="250"
+                          y1="240"
+                          x2="370"
+                          y2="240"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
+                        <text
+                          x="260"
+                          y="260"
+                          dominantBaseline="middle"
+                          fontSize="14"
+                        >
                           + Handle()
                         </text>
 
@@ -1538,8 +1619,20 @@ public class GameStateManager : MonoBehaviour
                         >
                           ConcreteStateA
                         </text>
-                        <line x1="100" y1="360" x2="220" y2="360" stroke="currentColor" strokeWidth="2" />
-                        <text x="110" y="380" dominantBaseline="middle" fontSize="14">
+                        <line
+                          x1="100"
+                          y1="360"
+                          x2="220"
+                          y2="360"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
+                        <text
+                          x="110"
+                          y="380"
+                          dominantBaseline="middle"
+                          fontSize="14"
+                        >
                           + Handle()
                         </text>
 
@@ -1563,8 +1656,20 @@ public class GameStateManager : MonoBehaviour
                         >
                           ConcreteStateB
                         </text>
-                        <line x1="250" y1="360" x2="370" y2="360" stroke="currentColor" strokeWidth="2" />
-                        <text x="260" y="380" dominantBaseline="middle" fontSize="14">
+                        <line
+                          x1="250"
+                          y1="360"
+                          x2="370"
+                          y2="360"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
+                        <text
+                          x="260"
+                          y="380"
+                          dominantBaseline="middle"
+                          fontSize="14"
+                        >
                           + Handle()
                         </text>
 
@@ -1588,23 +1693,75 @@ public class GameStateManager : MonoBehaviour
                         >
                           ConcreteStateC
                         </text>
-                        <line x1="400" y1="360" x2="520" y2="360" stroke="currentColor" strokeWidth="2" />
-                        <text x="410" y="380" dominantBaseline="middle" fontSize="14">
+                        <line
+                          x1="400"
+                          y1="360"
+                          x2="520"
+                          y2="360"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
+                        <text
+                          x="410"
+                          y="380"
+                          dominantBaseline="middle"
+                          fontSize="14"
+                        >
                           + Handle()
                         </text>
 
                         {/* Connections */}
-                        <line x1="310" y1="130" x2="310" y2="190" stroke="currentColor" strokeWidth="2" />
-                        <polygon points="310,200 305,190 315,190" fill="currentColor" />
+                        <line
+                          x1="310"
+                          y1="130"
+                          x2="310"
+                          y2="190"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
+                        <polygon
+                          points="310,200 305,190 315,190"
+                          fill="currentColor"
+                        />
 
-                        <line x1="160" y1="280" x2="160" y2="310" stroke="currentColor" strokeWidth="2" />
-                        <polygon points="160,320 155,310 165,310" fill="currentColor" />
+                        <line
+                          x1="160"
+                          y1="280"
+                          x2="160"
+                          y2="310"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
+                        <polygon
+                          points="160,320 155,310 165,310"
+                          fill="currentColor"
+                        />
 
-                        <line x1="310" y1="280" x2="310" y2="310" stroke="currentColor" strokeWidth="2" />
-                        <polygon points="310,320 305,310 315,310" fill="currentColor" />
+                        <line
+                          x1="310"
+                          y1="280"
+                          x2="310"
+                          y2="310"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
+                        <polygon
+                          points="310,320 305,310 315,310"
+                          fill="currentColor"
+                        />
 
-                        <line x1="460" y1="280" x2="460" y2="310" stroke="currentColor" strokeWidth="2" />
-                        <polygon points="460,320 455,310 465,310" fill="currentColor" />
+                        <line
+                          x1="460"
+                          y1="280"
+                          x2="460"
+                          y2="310"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
+                        <polygon
+                          points="460,320 455,310 465,310"
+                          fill="currentColor"
+                        />
 
                         <path
                           d="M 250,240 C 180,240 180,280 160,280"
@@ -1629,12 +1786,25 @@ public class GameStateManager : MonoBehaviour
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="text-2xl font-bold">State Transition Diagram</h2>
+                  <h2 className="text-2xl font-bold">
+                    State Transition Diagram
+                  </h2>
                   <div className="border rounded-lg p-6 bg-muted/30 flex justify-center">
                     <div className="max-w-lg">
-                      <svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" className="w-full">
+                      <svg
+                        viewBox="0 0 600 300"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-full"
+                      >
                         {/* States */}
-                        <circle cx="100" cy="150" r="40" fill="white" stroke="currentColor" strokeWidth="2" />
+                        <circle
+                          cx="100"
+                          cy="150"
+                          r="40"
+                          fill="white"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
                         <text
                           x="100"
                           y="150"
@@ -1646,7 +1816,14 @@ public class GameStateManager : MonoBehaviour
                           Idle
                         </text>
 
-                        <circle cx="300" cy="150" r="40" fill="white" stroke="currentColor" strokeWidth="2" />
+                        <circle
+                          cx="300"
+                          cy="150"
+                          r="40"
+                          fill="white"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
                         <text
                           x="300"
                           y="150"
@@ -1658,7 +1835,14 @@ public class GameStateManager : MonoBehaviour
                           Walk
                         </text>
 
-                        <circle cx="500" cy="150" r="40" fill="white" stroke="currentColor" strokeWidth="2" />
+                        <circle
+                          cx="500"
+                          cy="150"
+                          r="40"
+                          fill="white"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
                         <text
                           x="500"
                           y="150"
@@ -1670,7 +1854,14 @@ public class GameStateManager : MonoBehaviour
                           Run
                         </text>
 
-                        <circle cx="200" cy="50" r="40" fill="white" stroke="currentColor" strokeWidth="2" />
+                        <circle
+                          cx="200"
+                          cy="50"
+                          r="40"
+                          fill="white"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
                         <text
                           x="200"
                           y="50"
@@ -1682,7 +1873,14 @@ public class GameStateManager : MonoBehaviour
                           Jump
                         </text>
 
-                        <circle cx="400" cy="50" r="40" fill="white" stroke="currentColor" strokeWidth="2" />
+                        <circle
+                          cx="400"
+                          cy="50"
+                          r="40"
+                          fill="white"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
                         <text
                           x="400"
                           y="50"
@@ -1701,8 +1899,17 @@ public class GameStateManager : MonoBehaviour
                           stroke="currentColor"
                           strokeWidth="2"
                         />
-                        <polygon points="260,150 250,145 250,155" fill="currentColor" />
-                        <text x="200" y="140" textAnchor="middle" dominantBaseline="middle" fontSize="12">
+                        <polygon
+                          points="260,150 250,145 250,155"
+                          fill="currentColor"
+                        />
+                        <text
+                          x="200"
+                          y="140"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          fontSize="12"
+                        >
                           Move
                         </text>
 
@@ -1712,8 +1919,17 @@ public class GameStateManager : MonoBehaviour
                           stroke="currentColor"
                           strokeWidth="2"
                         />
-                        <polygon points="140,150 150,145 150,155" fill="currentColor" />
-                        <text x="200" y="170" textAnchor="middle" dominantBaseline="middle" fontSize="12">
+                        <polygon
+                          points="140,150 150,145 150,155"
+                          fill="currentColor"
+                        />
+                        <text
+                          x="200"
+                          y="170"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          fontSize="12"
+                        >
                           Stop
                         </text>
 
@@ -1723,8 +1939,17 @@ public class GameStateManager : MonoBehaviour
                           stroke="currentColor"
                           strokeWidth="2"
                         />
-                        <polygon points="460,150 450,145 450,155" fill="currentColor" />
-                        <text x="400" y="140" textAnchor="middle" dominantBaseline="middle" fontSize="12">
+                        <polygon
+                          points="460,150 450,145 450,155"
+                          fill="currentColor"
+                        />
+                        <text
+                          x="400"
+                          y="140"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          fontSize="12"
+                        >
                           Sprint
                         </text>
 
@@ -1734,32 +1959,97 @@ public class GameStateManager : MonoBehaviour
                           stroke="currentColor"
                           strokeWidth="2"
                         />
-                        <polygon points="340,150 350,145 350,155" fill="currentColor" />
-                        <text x="400" y="170" textAnchor="middle" dominantBaseline="middle" fontSize="12">
+                        <polygon
+                          points="340,150 350,145 350,155"
+                          fill="currentColor"
+                        />
+                        <text
+                          x="400"
+                          y="170"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          fontSize="12"
+                        >
                           Release Sprint
                         </text>
 
-                        <path d="M 100,110 C 100,80 150,50 160,50" fill="none" stroke="currentColor" strokeWidth="2" />
-                        <polygon points="160,50 155,60 165,55" fill="currentColor" />
-                        <text x="120" y="70" textAnchor="middle" dominantBaseline="middle" fontSize="12">
+                        <path
+                          d="M 100,110 C 100,80 150,50 160,50"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
+                        <polygon
+                          points="160,50 155,60 165,55"
+                          fill="currentColor"
+                        />
+                        <text
+                          x="120"
+                          y="70"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          fontSize="12"
+                        >
                           Jump
                         </text>
 
-                        <path d="M 300,110 C 300,80 250,50 240,50" fill="none" stroke="currentColor" strokeWidth="2" />
-                        <polygon points="240,50 245,60 235,55" fill="currentColor" />
-                        <text x="260" y="70" textAnchor="middle" dominantBaseline="middle" fontSize="12">
+                        <path
+                          d="M 300,110 C 300,80 250,50 240,50"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
+                        <polygon
+                          points="240,50 245,60 235,55"
+                          fill="currentColor"
+                        />
+                        <text
+                          x="260"
+                          y="70"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          fontSize="12"
+                        >
                           Jump
                         </text>
 
-                        <path d="M 500,110 C 500,80 450,50 440,50" fill="none" stroke="currentColor" strokeWidth="2" />
-                        <polygon points="440,50 445,60 435,55" fill="currentColor" />
-                        <text x="460" y="70" textAnchor="middle" dominantBaseline="middle" fontSize="12">
+                        <path
+                          d="M 500,110 C 500,80 450,50 440,50"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
+                        <polygon
+                          points="440,50 445,60 435,55"
+                          fill="currentColor"
+                        />
+                        <text
+                          x="460"
+                          y="70"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          fontSize="12"
+                        >
                           Jump
                         </text>
 
-                        <path d="M 240,50 C 280,50 320,50 360,50" fill="none" stroke="currentColor" strokeWidth="2" />
-                        <polygon points="360,50 350,45 350,55" fill="currentColor" />
-                        <text x="300" y="40" textAnchor="middle" dominantBaseline="middle" fontSize="12">
+                        <path
+                          d="M 240,50 C 280,50 320,50 360,50"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
+                        <polygon
+                          points="360,50 350,45 350,55"
+                          fill="currentColor"
+                        />
+                        <text
+                          x="300"
+                          y="40"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          fontSize="12"
+                        >
                           Falling
                         </text>
 
@@ -1769,8 +2059,17 @@ public class GameStateManager : MonoBehaviour
                           stroke="currentColor"
                           strokeWidth="2"
                         />
-                        <polygon points="300,150 310,145 305,135" fill="currentColor" />
-                        <text x="330" y="110" textAnchor="middle" dominantBaseline="middle" fontSize="12">
+                        <polygon
+                          points="300,150 310,145 305,135"
+                          fill="currentColor"
+                        />
+                        <text
+                          x="330"
+                          y="110"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          fontSize="12"
+                        >
                           Land + Move
                         </text>
 
@@ -1780,8 +2079,17 @@ public class GameStateManager : MonoBehaviour
                           stroke="currentColor"
                           strokeWidth="2"
                         />
-                        <polygon points="500,150 490,145 495,135" fill="currentColor" />
-                        <text x="470" y="110" textAnchor="middle" dominantBaseline="middle" fontSize="12">
+                        <polygon
+                          points="500,150 490,145 495,135"
+                          fill="currentColor"
+                        />
+                        <text
+                          x="470"
+                          y="110"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          fontSize="12"
+                        >
                           Land + Sprint
                         </text>
 
@@ -1791,8 +2099,17 @@ public class GameStateManager : MonoBehaviour
                           stroke="currentColor"
                           strokeWidth="2"
                         />
-                        <polygon points="130,120 140,125 135,115" fill="currentColor" />
-                        <text x="250" y="100" textAnchor="middle" dominantBaseline="middle" fontSize="12">
+                        <polygon
+                          points="130,120 140,125 135,115"
+                          fill="currentColor"
+                        />
+                        <text
+                          x="250"
+                          y="100"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          fontSize="12"
+                        >
                           Land + No Input
                         </text>
                       </svg>
@@ -1800,7 +2117,9 @@ public class GameStateManager : MonoBehaviour
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="text-2xl font-bold">Enemy AI State Machine Example</h2>
+                  <h2 className="text-2xl font-bold">
+                    Enemy AI State Machine Example
+                  </h2>
                   <div className="border rounded-lg p-6 bg-muted/30 flex justify-center">
                     <Image
                       src="/placeholder.svg?height=300&width=500"
@@ -1814,15 +2133,15 @@ public class GameStateManager : MonoBehaviour
                 <div className="space-y-4">
                   <h2 className="text-2xl font-bold">Interactive Diagram</h2>
                   <p>
-                    Use our diagram editor to create your own implementation of the State pattern for your specific game
-                    needs.
+                    Use our diagram editor to create your own implementation of
+                    the State pattern for your specific game needs.
                   </p>
-                  <Link href="/diagram?template=state">
+                  {/* <Link href="/diagram?template=state">
                     <Button>
                       <GitFork className="mr-2 h-4 w-4" />
                       Open in Diagram Editor
                     </Button>
-                  </Link>
+                  </Link> */}
                 </div>
               </TabsContent>
             </Tabs>
@@ -1831,6 +2150,5 @@ public class GameStateManager : MonoBehaviour
       </main>
       <SiteFooter />
     </div>
-  )
+  );
 }
-
