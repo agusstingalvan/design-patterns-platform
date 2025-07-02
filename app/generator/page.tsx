@@ -383,10 +383,6 @@ ${controllerStateDeclarations}
         : ""
     }
     
-    // Properties
-    public float moveSpeed = 3f;
-    public float actionRange = 1.5f;
-    public Transform target;
     
     private void Awake()
     {
@@ -460,15 +456,7 @@ ${callbackImplementations}
     
     // State change methods
 ${controllerStateMethods}
-    
-    // Helper methods that states can use
-    public float GetDistanceToTarget()
-    {
-        if (target == null)
-            return Mathf.Infinity;
-            
-        return Vector3.Distance(transform.position, target.position);
-    }
+
 }`;
         files.controller = controllerCode;
         names.controller = `${className}Controller.cs`;
@@ -489,179 +477,20 @@ ${controllerStateMethods}
             .join("\n\n");
 
           let stateLogic = "";
-          if (state.name.toLowerCase() === "idle") {
-            stateLogic = `    private float idleTimer = 0f;
-    private float idleDuration = 3f;
-    
-    public void EnterState(${className}Controller context)
+          stateLogic = `    public void EnterState(${className}Controller context)
     {
         Debug.Log("Entering ${state.name} State");
-        idleTimer = 0f;
-        // Animation or visual feedback
     }
     
     public void UpdateState(${className}Controller context)
     {
-        // Idle behavior
-        idleTimer += Time.deltaTime;
-        
-        // Check for transitions
-        if (idleTimer >= idleDuration)
-        {
-            ${
-              enabledStates.find((s) => s.name.toLowerCase() === "move")
-                ? `context.SetMoveState();`
-                : "// Transition to next state"
-            }
-            return;
-        }
-        
-        if (context.GetDistanceToTarget() <= context.actionRange)
-        {
-            ${
-              enabledStates.find((s) => s.name.toLowerCase() === "action")
-                ? `context.SetActionState();`
-                : "// Transition to action state"
-            }
-        }
+        Debug.Log("Update ${state.name} State");
     }
     
     public void ExitState(${className}Controller context)
     {
         Debug.Log("Exiting ${state.name} State");
     }`;
-          } else if (state.name.toLowerCase() === "move") {
-            stateLogic = `    public void EnterState(${className}Controller context)
-    {
-        Debug.Log("Entering ${state.name} State");
-        // Animation or visual feedback
-    }
-    
-    public void UpdateState(${className}Controller context)
-    {
-        Move(context);
-        
-        // Check for transitions
-        if (context.GetDistanceToTarget() <= context.actionRange)
-        {
-            ${
-              enabledStates.find((s) => s.name.toLowerCase() === "action")
-                ? `context.SetActionState();`
-                : "// Transition to action state"
-            }
-        }
-    }
-    
-    public void ExitState(${className}Controller context)
-    {
-        Debug.Log("Exiting ${state.name} State");
-    }
-    
-    private void Move(${className}Controller context)
-    {
-        if (context.target == null)
-            return;
-            
-        // Move towards target
-        Vector3 direction = (context.target.position - context.transform.position).normalized;
-        context.transform.position += direction * context.moveSpeed * Time.deltaTime;
-        
-        // Rotate towards target
-        if (direction != Vector3.zero)
-        {
-            context.transform.rotation = Quaternion.LookRotation(direction);
-        }
-    }`;
-          } else if (state.name.toLowerCase() === "action") {
-            stateLogic = `    private float actionTimer = 0f;
-    private float actionCooldown = 1.5f;
-    
-    public void EnterState(${className}Controller context)
-    {
-        Debug.Log("Entering ${state.name} State");
-        actionTimer = 0f;
-        // Animation or visual feedback
-    }
-    
-    public void UpdateState(${className}Controller context)
-    {
-        FaceTarget(context);
-        
-        // Action logic
-        actionTimer += Time.deltaTime;
-        if (actionTimer >= actionCooldown)
-        {
-            PerformAction(context);
-            actionTimer = 0f;
-        }
-        
-        // Check for transitions
-        float distanceToTarget = context.GetDistanceToTarget();
-        
-        if (distanceToTarget > context.actionRange)
-        {
-            ${
-              enabledStates.find((s) => s.name.toLowerCase() === "move")
-                ? `context.SetMoveState();`
-                : "// Transition to move state"
-            }
-        }
-    }
-    
-    public void ExitState(${className}Controller context)
-    {
-        Debug.Log("Exiting ${state.name} State");
-    }
-    
-    private void FaceTarget(${className}Controller context)
-    {
-        if (context.target == null)
-            return;
-            
-        Vector3 direction = (context.target.position - context.transform.position).normalized;
-        direction.y = 0; // Keep on same Y plane
-        
-        if (direction != Vector3.zero)
-        {
-            context.transform.rotation = Quaternion.LookRotation(direction);
-        }
-    }
-    
-    private void PerformAction(${className}Controller context)
-    {
-        Debug.Log("${className} performs action!");
-        
-        // Implement action logic here
-        // This could be:
-        // - Spawning a projectile
-        // - Activating a collider
-        // - Applying an effect
-        // - Playing animation
-    }`;
-          } else {
-            stateLogic = `    public void EnterState(${className}Controller context)
-    {
-        Debug.Log("Entering ${state.name} State");
-        // Animation or visual feedback
-    }
-    
-    public void UpdateState(${className}Controller context)
-    {
-        // Implement ${state.name} state behavior
-        
-        // Check for transitions to other states
-        // Example:
-        // if (someCondition)
-        // {
-        //     context.SetOtherState();
-        // }
-    }
-    
-    public void ExitState(${className}Controller context)
-    {
-        Debug.Log("Exiting ${state.name} State");
-    }`;
-          }
 
           const stateCode = `using UnityEngine;
 
