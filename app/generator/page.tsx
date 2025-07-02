@@ -276,23 +276,12 @@ public class ${className} : MonoBehaviour
         _instance = this;
         DontDestroyOnLoad(gameObject);
         
-        ${
-          !lazyInit
-            ? "// Initialize singleton instance on Awake\nInitialize();"
-            : ""
-        }
     }
     
     ${
       lazyInit
         ? '// Called when the singleton is first accessed\nprivate void Initialize()\n{\n    // Add initialization code here\n    Debug.Log("${className} initialized");\n}'
         : ""
-    }
-    
-    // Add your singleton functionality below
-    public void ExampleMethod()
-    {
-        Debug.Log("${className} singleton method called!");
     }
 }`;
         files.main = singletonCode;
@@ -820,21 +809,21 @@ public class CommandInvoker : MonoBehaviour
   };
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col px-4 overflow-hidden">
       <SiteHeader />
       <main className="flex-1">
         <div className="container py-6">
           <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
+            {/* <div className="flex flex-col gap-2">
               <h1 className="text-3xl font-bold tracking-tight">
                 Code Generator
               </h1>
               <p className="text-muted-foreground">
                 Generate customized design pattern code for your game engine
               </p>
-            </div>
+            </div> */}
             <div className="grid gap-6 md:grid-cols-2">
-              <Card>
+              <Card className="h-[calc(100vh-210px)] overflow-y-scroll">
                 <CardContent className="p-6">
                   <div className="space-y-4">
                     <div className="space-y-2">
@@ -856,13 +845,13 @@ public class CommandInvoker : MonoBehaviour
                               <span>State</span>
                             </div>
                           </SelectItem>
-                          <SelectItem value="factory">
+                          {/* <SelectItem value="factory">
                             <div className="flex items-center">
                               <Gamepad2 className="mr-2 h-4 w-4" />
                               <span>Factory Method</span>
                             </div>
-                          </SelectItem>
-                          <SelectItem value="observer">
+                          </SelectItem> */}
+                          {/* <SelectItem value="observer">
                             <div className="flex items-center">
                               <Gamepad2 className="mr-2 h-4 w-4" />
                               <span>Observer</span>
@@ -873,11 +862,11 @@ public class CommandInvoker : MonoBehaviour
                               <Gamepad2 className="mr-2 h-4 w-4" />
                               <span>Command</span>
                             </div>
-                          </SelectItem>
+                          </SelectItem> */}
                         </SelectContent>
                       </Select>
                     </div>
-                    <div className="space-y-2">
+                    {/* <div className="space-y-2">
                       <Label htmlFor="engine">Game Engine</Label>
                       <Select value={engine} onValueChange={setEngine}>
                         <SelectTrigger id="engine">
@@ -887,7 +876,7 @@ public class CommandInvoker : MonoBehaviour
                           <SelectItem value="unity">Unity (C#)</SelectItem>
                         </SelectContent>
                       </Select>
-                    </div>
+                    </div> */}
                     <div className="space-y-2">
                       <Label htmlFor="class-name">Main Class Name</Label>
                       <Input
@@ -898,7 +887,7 @@ public class CommandInvoker : MonoBehaviour
                       />
                     </div>
 
-                    {pattern === "singleton" && (
+                    {/* {pattern === "singleton" && (
                       <div className="pt-2">
                         <h3 className="font-medium mb-2">Singleton Options</h3>
                         <div className="space-y-2">
@@ -926,11 +915,11 @@ public class CommandInvoker : MonoBehaviour
                           </div>
                         </div>
                       </div>
-                    )}
+                    )} */}
 
                     {pattern === "state" && (
                       <div className="pt-2">
-                        <h3 className="font-medium mb-2">
+                        {/* <h3 className="font-medium mb-2">
                           State Machine Options
                         </h3>
                         <div className="space-y-2">
@@ -958,7 +947,7 @@ public class CommandInvoker : MonoBehaviour
                               Event-Driven Transitions
                             </Label>
                           </div>
-                        </div>
+                        </div> */}
 
                         <h3 className="font-medium mt-4 mb-2">States</h3>
                         <div className="space-y-3">
@@ -1104,14 +1093,14 @@ public class CommandInvoker : MonoBehaviour
                       </div>
                     )}
 
-                    <Button className="w-full" onClick={generateCode}>
+                    {/* <Button className="w-full" onClick={generateCode}>
                       <RefreshCw className="mr-2 h-4 w-4" />
                       Generate Code
-                    </Button>
+                    </Button> */}
                   </div>
                 </CardContent>
               </Card>
-              <Card>
+              <Card className="h-[calc(100vh-210px)] overflow-y-scroll">
                 <CardContent className="p-0">
                   <Tabs defaultValue="code">
                     <div className="flex items-center justify-between border-b px-4">
