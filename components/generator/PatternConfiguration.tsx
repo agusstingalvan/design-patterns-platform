@@ -13,6 +13,7 @@ import { Plus, Minus } from "lucide-react";
 import { CallbackMethodsConfig, CallbackMethod } from "./CallbackMethodsConfig";
 
 type SingletonVariant = "minimal" | "persistent" | "generic";
+type ObjectPoolVariant = "custom" | "generic";
 
 interface SingletonConfigProps {
   className: string;
@@ -286,6 +287,198 @@ export function StateConfig({
           callbackMethods={callbackMethods}
           onCallbackMethodsChange={onCallbackMethodsChange}
         />
+      </div>
+    </>
+  );
+}
+
+interface ObjectPoolConfigProps {
+  className: string;
+  variant: ObjectPoolVariant;
+  initPoolSize: number;
+  defaultCapacity: number;
+  maxSize: number;
+  collectionCheck: boolean;
+  includeExample: boolean;
+  onClassNameChange: (value: string) => void;
+  onVariantChange: (value: ObjectPoolVariant) => void;
+  onInitPoolSizeChange: (value: number) => void;
+  onDefaultCapacityChange: (value: number) => void;
+  onMaxSizeChange: (value: number) => void;
+  onCollectionCheckChange: (value: boolean) => void;
+  onIncludeExampleChange: (value: boolean) => void;
+}
+
+export function ObjectPoolConfig({
+  className,
+  variant,
+  initPoolSize,
+  defaultCapacity,
+  maxSize,
+  collectionCheck,
+  includeExample,
+  onClassNameChange,
+  onVariantChange,
+  onInitPoolSizeChange,
+  onDefaultCapacityChange,
+  onMaxSizeChange,
+  onCollectionCheckChange,
+  onIncludeExampleChange,
+}: ObjectPoolConfigProps) {
+  return (
+    <>
+      <div className="space-y-2">
+        <Label htmlFor="class-name">Nombre de Clase Base</Label>
+        <Input
+          id="class-name"
+          value={className}
+          onChange={(e) => onClassNameChange(e.target.value)}
+          placeholder="ej. Projectile, Bullet, Effect"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="pool-variant">Variante de Object Pool</Label>
+        <Select value={variant} onValueChange={onVariantChange}>
+          <SelectTrigger id="pool-variant">
+            <SelectValue placeholder="Seleccionar variante" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="custom">
+              <div className="flex flex-col items-start">
+                <span className="font-medium">Custom Stack</span>
+                <span className="text-xs text-muted-foreground">
+                  Pool mínimo con Stack (sin dependencias)
+                </span>
+              </div>
+            </SelectItem>
+            <SelectItem value="generic">
+              <div className="flex flex-col items-start">
+                <span className="font-medium">Generic UnityEngine.Pool</span>
+                <span className="text-xs text-muted-foreground">
+                  Pool genérico con API de Unity
+                </span>
+              </div>
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {variant === "custom" && (
+        <div className="pt-2">
+          <h3 className="font-medium mb-2">Configuración de Pool Custom</h3>
+          <div className="space-y-2">
+            <div>
+              <Label htmlFor="init-pool-size" className="text-sm">
+                Tamaño Inicial del Pool
+              </Label>
+              <Input
+                id="init-pool-size"
+                type="number"
+                min="1"
+                value={initPoolSize}
+                onChange={(e) =>
+                  onInitPoolSizeChange(parseInt(e.target.value) || 10)
+                }
+                className="mt-1"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Cantidad de objetos pre-inicializados
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {variant === "generic" && (
+        <div className="pt-2">
+          <h3 className="font-medium mb-2">
+            Configuración de Pool Genérico
+          </h3>
+          <div className="space-y-3">
+            <div>
+              <Label htmlFor="default-capacity" className="text-sm">
+                Capacidad por Defecto
+              </Label>
+              <Input
+                id="default-capacity"
+                type="number"
+                min="1"
+                value={defaultCapacity}
+                onChange={(e) =>
+                  onDefaultCapacityChange(parseInt(e.target.value) || 20)
+                }
+                className="mt-1"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Capacidad inicial del pool
+              </p>
+            </div>
+
+            <div>
+              <Label htmlFor="max-size" className="text-sm">
+                Tamaño Máximo
+              </Label>
+              <Input
+                id="max-size"
+                type="number"
+                min="1"
+                value={maxSize}
+                onChange={(e) =>
+                  onMaxSizeChange(parseInt(e.target.value) || 100)
+                }
+                className="mt-1"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Límite máximo de objetos en el pool
+              </p>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="collection-check"
+                checked={collectionCheck}
+                onCheckedChange={(checked) =>
+                  onCollectionCheckChange(checked === true)
+                }
+              />
+              <Label htmlFor="collection-check" className="text-sm">
+                <span className="font-medium">Collection Check</span>
+                <p className="text-xs text-muted-foreground">
+                  Validación de objetos duplicados (solo en desarrollo)
+                </p>
+              </Label>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="include-example"
+                checked={includeExample}
+                onCheckedChange={(checked) =>
+                  onIncludeExampleChange(checked === true)
+                }
+              />
+              <Label htmlFor="include-example" className="text-sm">
+                <span className="font-medium">Incluir Ejemplos</span>
+                <p className="text-xs text-muted-foreground">
+                  Generar clases de ejemplo (Pooled{className} y{" "}
+                  {className}Spawner)
+                </p>
+              </Label>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="pt-2">
+        <div className="rounded-md bg-muted p-3 text-sm text-muted-foreground">
+          <p className="font-medium mb-1">Object Pool Pattern</p>
+          <p className="text-xs">
+            {variant === "custom"
+              ? "Pool mínimo usando Stack<T>. Ideal para casos simples sin dependencias adicionales."
+              : "Pool genérico usando UnityEngine.Pool. Ofrece más control y opciones de configuración."}
+          </p>
+        </div>
       </div>
     </>
   );

@@ -8,10 +8,11 @@ interface State {
 }
 
 interface UsageInfoProps {
-  pattern: "singleton" | "state";
+  pattern: "singleton" | "state" | "object-pool";
   className: string;
   states?: State[];
   singletonVariant?: "minimal" | "persistent" | "generic";
+  objectPoolVariant?: "custom" | "generic";
 }
 
 export function UsageInfo({
@@ -19,6 +20,7 @@ export function UsageInfo({
   className,
   states = [],
   singletonVariant = "minimal",
+  objectPoolVariant = "generic",
 }: UsageInfoProps) {
   const generateDiagramUrl = () => {
     const params = new URLSearchParams();
@@ -189,6 +191,112 @@ void Update() {
           </div>
         </>
       )}
+
+      {pattern === "object-pool" && (
+        <>
+          <p className="text-sm text-muted-foreground">
+            El patrón Object Pool optimiza el rendimiento reutilizando objetos
+            pre-inicializados en lugar de crear y destruir instancias
+            continuamente.
+          </p>
+
+          {objectPoolVariant === "custom" && (
+            <div className="space-y-2 my-3">
+              <div className="rounded-md bg-blue-50 dark:bg-blue-950 p-3 text-sm">
+                <p className="font-medium mb-1">Pool Custom con Stack</p>
+                <p className="text-xs">
+                  Implementación mínima usando Stack{`<T>`}. Ideal para proyectos
+                  sin dependencias adicionales.
+                </p>
+              </div>
+              <h4 className="font-medium text-sm mt-4">
+                Pasos de Implementación:
+              </h4>
+              <ol className="list-decimal list-inside text-sm text-muted-foreground space-y-1">
+                <li>Asigna el prefab de Pooled{className} en el Inspector</li>
+                <li>Configura el tamaño inicial del pool (initPoolSize)</li>
+                <li>Usa pool.Get() para obtener instancias</li>
+                <li>Llama a instance.Release() para devolver al pool</li>
+              </ol>
+            </div>
+          )}
+
+          {objectPoolVariant === "generic" && (
+            <div className="space-y-2 my-3">
+              <div className="rounded-md bg-blue-50 dark:bg-blue-950 p-3 text-sm">
+                <p className="font-medium mb-1">Pool Genérico con UnityEngine.Pool</p>
+                <p className="text-xs">
+                  Implementación con la API oficial de Unity. Ofrece más
+                  configuración y control del ciclo de vida.
+                </p>
+              </div>
+              <h4 className="font-medium text-sm mt-4">
+                Pasos de Implementación:
+              </h4>
+              <ol className="list-decimal list-inside text-sm text-muted-foreground space-y-1">
+                <li>
+                  Implementa IPooledWithRef{`<T>`} en tu objeto pooleable
+                </li>
+                <li>Asigna el prefab en {className}Pool{`<T>`}</li>
+                <li>Configura defaultCapacity y maxSize según tus necesidades</li>
+                <li>Usa pool.Get() para obtener y pool.Release() para devolver</li>
+                <li>
+                  Opcionalmente implementa auto-release llamando a Release()
+                  internamente
+                </li>
+              </ol>
+            </div>
+          )}
+
+          <div className="mt-4 rounded-md bg-muted p-3">
+            <h4 className="font-medium text-sm mb-2">Ejemplo de Uso:</h4>
+            <pre className="text-xs overflow-x-auto bg-background p-2 rounded">
+              {objectPoolVariant === "custom"
+                ? `// En tu script de spawner/arma
+[SerializeField] private ${className}Pool pool;
+
+void Shoot()
+{
+    Pooled${className} item = pool.Get();
+    item.transform.position = spawnPoint.position;
+    // Configurar velocidad, dirección, etc.
+}
+
+// En Pooled${className}.cs cuando debe destruirse
+void OnBecameInvisible()
+{
+    Release(); // Devuelve al pool
+}`
+                : `// En tu script de spawner/arma
+[SerializeField] private ${className}Pool<Pooled${className}> pool;
+
+void Shoot()
+{
+    Pooled${className} item = pool.Get();
+    item.transform.position = spawnPoint.position;
+    // Configurar velocidad, dirección, etc.
+}
+
+// En Pooled${className}.cs (auto-release)
+void OnBecameInvisible()
+{
+    Release(); // Se devuelve al pool automáticamente
+}`}
+            </pre>
+          </div>
+          <div className="space-y-2 mt-4">
+            <h4 className="font-medium text-sm">Casos de Uso Comunes:</h4>
+            <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
+              <li>Proyectiles y Balas</li>
+              <li>Efectos de Partículas</li>
+              <li>Enemigos que respawnean</li>
+              <li>Objetos de UI temporales</li>
+              <li>Audio Sources para efectos de sonido</li>
+            </ul>
+          </div>
+        </>
+      )}
+
       <div className="pt-4 border-t mt-4">
         <h3 className="font-medium mb-2">Integración con Diagramas</h3>
         <p className="text-sm text-muted-foreground mb-3">

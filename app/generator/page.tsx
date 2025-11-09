@@ -16,14 +16,18 @@ import { Gamepad2 } from "lucide-react";
 import {
   SingletonConfig,
   StateConfig,
+  ObjectPoolConfig,
 } from "@/components/generator/PatternConfiguration";
 import { CodeViewer } from "@/components/generator/CodeViewer";
 import { UsageInfo } from "@/components/generator/UsageInfo";
 import { generateSingletonCode } from "@/lib/generators/singleton";
 import { generateStateCode } from "@/lib/generators/state";
+import { generateObjectPoolCode } from "@/lib/generators/object-pool";
 
 export default function GeneratorPage() {
-  const [pattern, setPattern] = useState<"singleton" | "state">("singleton");
+  const [pattern, setPattern] = useState<"singleton" | "state" | "object-pool">(
+    "singleton"
+  );
   const [className, setClassName] = useState("GameManager");
   const [generatedFiles, setGeneratedFiles] = useState<{
     [key: string]: string;
@@ -85,12 +89,24 @@ export default function GeneratorPage() {
     },
   ]);
 
+  // Object Pool pattern options
+  const [objectPoolVariant, setObjectPoolVariant] = useState<
+    "custom" | "generic"
+  >("generic");
+  const [initPoolSize, setInitPoolSize] = useState(10);
+  const [defaultCapacity, setDefaultCapacity] = useState(20);
+  const [maxSize, setMaxSize] = useState(100);
+  const [collectionCheck, setCollectionCheck] = useState(true);
+  const [includeExample, setIncludeExample] = useState(true);
+
   // Change default className when pattern changes
   useEffect(() => {
     if (pattern === "singleton") {
       setClassName("GameManager");
     } else if (pattern === "state") {
       setClassName("EnemyExample");
+    } else if (pattern === "object-pool") {
+      setClassName("Projectile");
     }
   }, [pattern]);
 
@@ -107,6 +123,12 @@ export default function GeneratorPage() {
     includeController,
     stateCallbackMethods,
     states,
+    objectPoolVariant,
+    initPoolSize,
+    defaultCapacity,
+    maxSize,
+    collectionCheck,
+    includeExample,
   ]);
 
   const generateCode = () => {
@@ -126,6 +148,18 @@ export default function GeneratorPage() {
         includeController,
         states,
         callbackMethods: stateCallbackMethods,
+      });
+      setGeneratedFiles(files);
+      setFileNames(names);
+    } else if (pattern === "object-pool") {
+      const { files, names } = generateObjectPoolCode({
+        className,
+        variant: objectPoolVariant,
+        initPoolSize,
+        defaultCapacity,
+        maxSize,
+        collectionCheck,
+        includeExample,
       });
       setGeneratedFiles(files);
       setFileNames(names);
@@ -154,9 +188,9 @@ export default function GeneratorPage() {
                       <Label htmlFor="pattern">Seleccionar Patrón</Label>
                       <Select
                         value={pattern}
-                        onValueChange={(value: "singleton" | "state") =>
-                          setPattern(value)
-                        }
+                        onValueChange={(
+                          value: "singleton" | "state" | "object-pool"
+                        ) => setPattern(value)}
                       >
                         <SelectTrigger id="pattern">
                           <SelectValue placeholder="Seleccionar patrón" />
@@ -171,7 +205,13 @@ export default function GeneratorPage() {
                           <SelectItem value="state">
                             <div className="flex items-center">
                               <Gamepad2 className="mr-2 h-4 w-4" />
-                              <span>State</span>
+                              <span>State Machine</span>
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="object-pool">
+                            <div className="flex items-center">
+                              <Gamepad2 className="mr-2 h-4 w-4" />
+                              <span>Object Pool</span>
                             </div>
                           </SelectItem>
                         </SelectContent>
@@ -205,6 +245,25 @@ export default function GeneratorPage() {
                         onCallbackMethodsChange={setStateCallbackMethods}
                       />
                     )}
+
+                    {pattern === "object-pool" && (
+                      <ObjectPoolConfig
+                        className={className}
+                        variant={objectPoolVariant}
+                        initPoolSize={initPoolSize}
+                        defaultCapacity={defaultCapacity}
+                        maxSize={maxSize}
+                        collectionCheck={collectionCheck}
+                        includeExample={includeExample}
+                        onClassNameChange={setClassName}
+                        onVariantChange={setObjectPoolVariant}
+                        onInitPoolSizeChange={setInitPoolSize}
+                        onDefaultCapacityChange={setDefaultCapacity}
+                        onMaxSizeChange={setMaxSize}
+                        onCollectionCheckChange={setCollectionCheck}
+                        onIncludeExampleChange={setIncludeExample}
+                      />
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -222,6 +281,7 @@ export default function GeneratorPage() {
                         className={className}
                         states={states}
                         singletonVariant={singletonVariant}
+                        objectPoolVariant={objectPoolVariant}
                       />
                     }
                   />
