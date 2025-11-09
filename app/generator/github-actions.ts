@@ -15,9 +15,15 @@ interface Repository {
   };
 }
 
+interface Branch {
+  name: string;
+  protected: boolean;
+}
+
 interface CreatePRParams {
   repository: string;
   branchName: string;
+  baseBranch: string;
   prTitle: string;
   prDescription: string;
   files: Array<{
@@ -148,6 +154,84 @@ export async function getUserRepositories(): Promise<Repository[]> {
 }
 
 /**
+ * Get branches from a GitHub repository
+ */
+export async function getRepositoryBranches(
+  repository: string
+): Promise<Branch[]> {
+  const supabase = await createClient();
+
+  // Get the authenticated user
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    throw new Error("Usuario no autenticado");
+  }
+
+  // Get the GitHub access token from the session
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  let token = session?.provider_token;
+
+  if (!token) {
+    const {
+      data: { session: refreshedSession },
+      error: refreshError,
+    } = await supabase.auth.refreshSession();
+
+    if (!refreshError && refreshedSession?.provider_token) {
+      token = refreshedSession.provider_token;
+    }
+  }
+
+  if (!token) {
+    throw new Error(
+      "No se encontró el token de GitHub. Por favor, vuelve a iniciar sesión."
+    );
+  }
+
+  const [owner, repo] = repository.split("/");
+
+  try {
+    console.log(`Fetching branches for ${repository}...`);
+
+    const response = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/branches?per_page=100`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/vnd.github.v3+json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error("GitHub API Error:", errorData);
+      throw new Error(
+        `Error al obtener ramas: ${errorData.message || response.statusText}`
+      );
+    }
+
+    const branches: Branch[] = await response.json();
+    console.log(`Found ${branches.length} branches`);
+
+    return branches;
+  } catch (error) {
+    console.error("Error fetching branches:", error);
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Error al obtener las ramas del repositorio");
+  }
+}
+
+/**
  * Create a Pull Request with the generated files
  */
 export async function createPullRequest(
@@ -182,27 +266,9 @@ export async function createPullRequest(
   const token = session.provider_token;
 
   try {
-    // 1. Get the default branch reference
-    const defaultBranchResponse = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/vnd.github.v3+json",
-        },
-      }
-    );
-
-    if (!defaultBranchResponse.ok) {
-      throw new Error("Error al obtener información del repositorio");
-    }
-
-    const repoData = await defaultBranchResponse.json();
-    const defaultBranch = repoData.default_branch;
-
-    // 2. Get the SHA of the default branch
+    // 1. Get the SHA of the base branch (the branch we want to merge into)
     const refResponse = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/git/ref/heads/${defaultBranch}`,
+      `https://api.github.com/repos/${owner}/${repo}/git/ref/heads/${params.baseBranch}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -212,13 +278,15 @@ export async function createPullRequest(
     );
 
     if (!refResponse.ok) {
-      throw new Error("Error al obtener la referencia de la rama principal");
+      throw new Error(
+        `Error al obtener la referencia de la rama ${params.baseBranch}`
+      );
     }
 
     const refData = await refResponse.json();
     const baseSHA = refData.object.sha;
 
-    // 3. Create a new branch
+    // 2. Create a new branch from the base branch
     const createBranchResponse = await fetch(
       `https://api.github.com/repos/${owner}/${repo}/git/refs`,
       {
@@ -372,7 +440,7 @@ export async function createPullRequest(
           title: params.prTitle,
           body: params.prDescription,
           head: params.branchName,
-          base: defaultBranch,
+          base: params.baseBranch,
         }),
       }
     );

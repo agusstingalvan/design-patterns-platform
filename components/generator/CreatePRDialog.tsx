@@ -25,6 +25,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   getUserRepositories,
   createPullRequest,
+  getRepositoryBranches,
 } from "@/app/generator/github-actions";
 
 interface CreatePRDialogProps {
@@ -44,6 +45,11 @@ interface Repository {
   private: boolean;
 }
 
+interface Branch {
+  name: string;
+  protected: boolean;
+}
+
 export function CreatePRDialog({
   open,
   onOpenChange,
@@ -53,12 +59,15 @@ export function CreatePRDialog({
   className,
 }: CreatePRDialogProps) {
   const [repositories, setRepositories] = useState<Repository[]>([]);
+  const [branches, setBranches] = useState<Branch[]>([]);
   const [selectedRepo, setSelectedRepo] = useState<string>("");
+  const [selectedBaseBranch, setSelectedBaseBranch] = useState<string>("");
   const [branchName, setBranchName] = useState("");
   const [prTitle, setPrTitle] = useState("");
   const [prDescription, setPrDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingRepos, setLoadingRepos] = useState(false);
+  const [loadingBranches, setLoadingBranches] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -77,6 +86,16 @@ export function CreatePRDialog({
       );
     }
   }, [open, pattern, className, fileNames]);
+
+  // Load branches when a repository is selected
+  useEffect(() => {
+    if (selectedRepo) {
+      loadBranches();
+    } else {
+      setBranches([]);
+      setSelectedBaseBranch("");
+    }
+  }, [selectedRepo]);
 
   const loadRepositories = async () => {
     setLoadingRepos(true);
@@ -112,8 +131,41 @@ export function CreatePRDialog({
     }
   };
 
+  const loadBranches = async () => {
+    if (!selectedRepo) return;
+
+    setLoadingBranches(true);
+    setError(null);
+    try {
+      const repoBranches = await getRepositoryBranches(selectedRepo);
+      setBranches(repoBranches);
+
+      // Auto-select the default branch if available
+      const selectedRepository = repositories.find(
+        (r) => r.full_name === selectedRepo
+      );
+      if (selectedRepository && repoBranches.length > 0) {
+        // Find the default branch or use the first one
+        const defaultBranch = repoBranches.find(
+          (b: Branch) => b.name === selectedRepository.default_branch
+        );
+        setSelectedBaseBranch(
+          defaultBranch?.name || repoBranches[0].name || ""
+        );
+      }
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Error al cargar las ramas del repositorio";
+      setError(errorMessage);
+    } finally {
+      setLoadingBranches(false);
+    }
+  };
+
   const handleCreatePR = async () => {
-    if (!selectedRepo || !branchName || !prTitle) {
+    if (!selectedRepo || !selectedBaseBranch || !branchName || !prTitle) {
       setError("Por favor completa todos los campos requeridos");
       return;
     }
@@ -130,6 +182,7 @@ export function CreatePRDialog({
       const result = await createPullRequest({
         repository: selectedRepo,
         branchName,
+        baseBranch: selectedBaseBranch,
         prTitle,
         prDescription,
         files,
@@ -233,13 +286,58 @@ export function CreatePRDialog({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="branch">Nombre de la rama *</Label>
+            <Label htmlFor="baseBranch">Rama base (destino del PR) *</Label>
+            {loadingBranches ? (
+              <div className="flex items-center justify-center py-4">
+                <Loader2 className="h-6 w-6 animate-spin" />
+              </div>
+            ) : (
+              <Select
+                value={selectedBaseBranch}
+                onValueChange={setSelectedBaseBranch}
+                disabled={!selectedRepo || branches.length === 0}
+              >
+                <SelectTrigger id="baseBranch">
+                  <SelectValue placeholder="Selecciona la rama base" />
+                </SelectTrigger>
+                <SelectContent>
+                  {branches.length === 0 ? (
+                    <SelectItem value="no-branches" disabled>
+                      {selectedRepo
+                        ? "No se encontraron ramas"
+                        : "Primero selecciona un repositorio"}
+                    </SelectItem>
+                  ) : (
+                    branches.map((branch) => (
+                      <SelectItem key={branch.name} value={branch.name}>
+                        <div className="flex items-center gap-2">
+                          <span>{branch.name}</span>
+                          {branch.protected && (
+                            <Lock className="h-3 w-3 text-muted-foreground" />
+                          )}
+                        </div>
+                      </SelectItem>
+                    ))
+                  )}
+                </SelectContent>
+              </Select>
+            )}
+            <p className="text-xs text-muted-foreground">
+              El PR se fusionará en esta rama
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="branch">Nombre de la nueva rama *</Label>
             <Input
               id="branch"
               value={branchName}
               onChange={(e) => setBranchName(e.target.value)}
               placeholder="feature/singleton-gamemanager"
             />
+            <p className="text-xs text-muted-foreground">
+              Se creará desde la rama base seleccionada
+            </p>
           </div>
 
           <div className="space-y-2">
@@ -286,7 +384,18 @@ export function CreatePRDialog({
           >
             Cancelar
           </Button>
-          <Button onClick={handleCreatePR} disabled={loading || loadingRepos}>
+          <Button
+            onClick={handleCreatePR}
+            disabled={
+              loading ||
+              loadingRepos ||
+              loadingBranches ||
+              !selectedRepo ||
+              !selectedBaseBranch ||
+              !branchName ||
+              !prTitle
+            }
+          >
             {loading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
