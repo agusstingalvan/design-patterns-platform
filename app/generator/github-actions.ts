@@ -39,6 +39,7 @@ export async function getUserRepositories(): Promise<Repository[]> {
   } = await supabase.auth.getUser();
 
   if (userError || !user) {
+    console.error("User authentication error:", userError);
     throw new Error("Usuario no autenticado");
   }
 
@@ -47,9 +48,31 @@ export async function getUserRepositories(): Promise<Repository[]> {
     data: { session },
   } = await supabase.auth.getSession();
 
-  if (!session?.provider_token) {
+  console.log("Session exists:", !!session);
+  console.log("Provider token exists:", !!session?.provider_token);
+  console.log("Provider:", session?.user?.app_metadata?.provider);
+
+  // Try to get the token from different sources
+  let token = session?.provider_token;
+
+  if (!token) {
+    // Try to get from provider_refresh_token and refresh the session
+    console.log("No provider_token found, checking for refresh...");
+
+    const {
+      data: { session: refreshedSession },
+      error: refreshError,
+    } = await supabase.auth.refreshSession();
+
+    if (!refreshError && refreshedSession?.provider_token) {
+      console.log("Token refreshed successfully");
+      token = refreshedSession.provider_token;
+    }
+  }
+
+  if (!token) {
     throw new Error(
-      "No se encontró el token de GitHub. Por favor, vuelve a iniciar sesión."
+      "No se encontró el token de GitHub. Por favor, cierra sesión y vuelve a iniciar sesión con GitHub para autorizar los permisos necesarios (repo, read:user, user:email)."
     );
   }
 
@@ -57,34 +80,69 @@ export async function getUserRepositories(): Promise<Repository[]> {
     // Fetch repositories from GitHub API
     // affiliation=owner,collaborator ensures we get repos where we have access
     // type=all ensures we get both public and private repos
-    const response = await fetch(
-      "https://api.github.com/user/repos?per_page=100&sort=updated&affiliation=owner,collaborator&type=all",
-      {
-        headers: {
-          Authorization: `Bearer ${session.provider_token}`,
-          Accept: "application/vnd.github.v3+json",
-        },
-      }
-    );
+    const url =
+      "https://api.github.com/user/repos" +
+      "?per_page=100&sort=updated" +
+      "&affiliation=owner,collaborator,organization_member" +
+      "&visibility=all"; // opcional
+
+    console.log("Fetching repositories from GitHub...");
+    console.log("URL:", url);
+
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/vnd.github.v3+json",
+      },
+    });
+
+    console.log("Response status:", response.status);
+    console.log("Response statusText:", response.statusText);
 
     if (!response.ok) {
-      const errorData = await response.json();
+      const errorData = await response.json().catch(() => ({}));
       console.error("GitHub API Error:", errorData);
+      console.error("Response status:", response.status);
+
+      // Mensajes de error específicos según el código de respuesta
+      if (response.status === 401) {
+        throw new Error(
+          "Token de GitHub inválido o expirado. Por favor, cierra sesión y vuelve a iniciar sesión con GitHub."
+        );
+      }
+
+      if (response.status === 403) {
+        throw new Error(
+          "Permisos insuficientes. Por favor, cierra sesión y vuelve a iniciar sesión con GitHub para autorizar los permisos necesarios."
+        );
+      }
+
       throw new Error(
-        `Error al obtener repositorios de GitHub: ${
+        `Error al obtener repositorios de GitHub (${response.status}): ${
           errorData.message || response.statusText
         }`
       );
     }
 
     const repos: Repository[] = await response.json();
+    console.log(`Found ${repos.length} repositories`);
 
     // Filter repositories where user has push access (both public and private)
-    return repos.filter(
+    const filteredRepos = repos.filter(
       (repo) => repo.permissions?.push || repo.permissions?.admin
     );
+
+    console.log(
+      `Filtered to ${filteredRepos.length} repositories with write access`
+    );
+
+    return filteredRepos;
   } catch (error) {
     console.error("Error fetching GitHub repositories:", error);
+    // Re-throw the error with the specific message
+    if (error instanceof Error) {
+      throw error;
+    }
     throw new Error("Error al obtener repositorios de GitHub");
   }
 }
