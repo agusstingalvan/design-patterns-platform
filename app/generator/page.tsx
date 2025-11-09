@@ -1173,9 +1173,9 @@ public class CommandInvoker : MonoBehaviour
                           ))}
                         </div>
                       </div>
-                      <div className="relative">
+                      <div className="relative h-[600px] min-h-[400px]">
                         <Textarea
-                          className="font-mono text-sm min-h-[400px] rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                          className="font-mono text-sm h-full rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0"
                           value={generatedFiles[activeFile] || ""}
                           readOnly
                         />
