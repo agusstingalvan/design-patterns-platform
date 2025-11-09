@@ -889,9 +889,11 @@ public class CommandInvoker : MonoBehaviour
                       />
                     </div>
 
-                    {/* {pattern === "singleton" && (
+                    {pattern === "singleton" && (
                       <div className="pt-2">
-                        <h3 className="font-medium mb-2">Opciones de Singleton</h3>
+                        <h3 className="font-medium mb-2">
+                          Opciones de Singleton
+                        </h3>
                         <div className="space-y-2">
                           <div className="flex items-center space-x-2">
                             <Checkbox
@@ -913,11 +915,13 @@ public class CommandInvoker : MonoBehaviour
                                 setThreadSafe(checked === true)
                               }
                             />
-                            <Label htmlFor="thread-safe">Seguro para Hilos</Label>
+                            <Label htmlFor="thread-safe">
+                              Seguro para Hilos
+                            </Label>
                           </div>
                         </div>
                       </div>
-                    )} */}
+                    )}
 
                     {pattern === "state" && (
                       <div className="pt-2">
@@ -1102,10 +1106,10 @@ public class CommandInvoker : MonoBehaviour
                   </div>
                 </CardContent>
               </Card>
-              <Card className="h-[calc(100vh-210px)] overflow-y-scroll">
-                <CardContent className="p-0">
+              <Card className="h-[calc(100vh-210px)] overflow-y-scroll relative">
+                <CardContent className="p-0 ">
                   <Tabs defaultValue="code">
-                    <div className="flex items-center justify-between border-b px-4">
+                    <div className="flex items-center justify-between border-b px-4 absolute top-0 right-0 left-0 z-10">
                       <TabsList className="h-12">
                         <TabsTrigger value="code" className="flex items-center">
                           <Code2 className="mr-2 h-4 w-4" />
@@ -1151,7 +1155,7 @@ public class CommandInvoker : MonoBehaviour
                         </Button>
                       </div>
                     </div>
-                    <TabsContent value="code" className="m-0">
+                    <TabsContent value="code" className="m-0 pt-[50px]">
                       <div className="border-b">
                         <div className="flex overflow-x-auto">
                           {Object.keys(generatedFiles).map((key) => (
