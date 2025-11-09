@@ -35,9 +35,8 @@ export default function Home() {
                     Patrones de Diseño para Desarrollo de Videojuegos
                   </h1>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    Aprende, visualiza e implementa patrones de diseño en tus
-                    proyectos de juegos con ejemplos interactivos y generación
-                    de código.
+                    Implementa patrones de diseño en tus proyectos de
+                    videojuegos.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
@@ -47,12 +46,12 @@ export default function Home() {
                       <BookOpen className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
-                  <Link href="/diagram">
+                  {/* <Link href="/diagram">
                     <Button size="lg" variant="outline">
                       Crear Diagramas
                       <GitFork className="ml-2 h-4 w-4" />
                     </Button>
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
               <Image
