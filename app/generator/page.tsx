@@ -58,7 +58,6 @@ export default function GeneratorPage() {
   ]);
 
   // State pattern options
-  const [hierarchicalStates, setHierarchicalStates] = useState(false);
   const [states, setStates] = useState([
     { name: "Idle", enabled: true },
     { name: "Move", enabled: true },
@@ -95,7 +94,6 @@ export default function GeneratorPage() {
     persistence,
     lazyInstantiation,
     singletonCallbackMethods,
-    hierarchicalStates,
     stateCallbackMethods,
     states,
   ]);
@@ -114,7 +112,6 @@ export default function GeneratorPage() {
     } else if (pattern === "state") {
       const { files, names } = generateStateCode({
         className,
-        hierarchicalStates,
         states,
         callbackMethods: stateCallbackMethods,
       });
@@ -187,11 +184,9 @@ export default function GeneratorPage() {
                     {pattern === "state" && (
                       <StateConfig
                         className={className}
-                        hierarchicalStates={hierarchicalStates}
                         states={states}
                         callbackMethods={stateCallbackMethods}
                         onClassNameChange={setClassName}
-                        onHierarchicalStatesChange={setHierarchicalStates}
                         onStatesChange={setStates}
                         onCallbackMethodsChange={setStateCallbackMethods}
                       />

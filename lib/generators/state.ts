@@ -1,6 +1,5 @@
 export interface StateOptions {
   className: string;
-  hierarchicalStates: boolean;
   states: Array<{ name: string; enabled: boolean }>;
   callbackMethods: Array<{
     name: string;
@@ -22,7 +21,7 @@ export function generateStateCode(options: StateOptions): {
   files: GeneratedFiles;
   names: FileNames;
 } {
-  const { className, hierarchicalStates, states, callbackMethods } = options;
+  const { className, states, callbackMethods } = options;
   const files: GeneratedFiles = {};
   const names: FileNames = {};
 
@@ -31,66 +30,89 @@ export function generateStateCode(options: StateOptions): {
     (callback) => callback.enabled
   );
 
-  // Interface file
-  const callbackMethodsCode = enabledCallbacks
-    .map(
-      (callback) =>
-        `    void ${callback.name}(${className}Controller context, ${callback.paramType} ${callback.paramName});`
-    )
-    .join("\n");
-
-  const interfaceCode = `using UnityEngine;
+  // A. Interface file - I{ClassName}State
+  const interfaceCode = `using System;
 
 // State interface
 public interface I${className}State
 {
-    void EnterState(${className}Controller context);
-    void UpdateState(${className}Controller context);
-    void ExitState(${className}Controller context);
-${callbackMethodsCode ? callbackMethodsCode : ""}
+    void Enter();
+    void Update();
+    void Exit();
 }`;
   files.interface = interfaceCode;
   names.interface = `I${className}State.cs`;
 
-  // Controller file
-  const controllerStateDeclarations = enabledStates
+  // B. State Machine class
+  const stateDeclarations = enabledStates
     .map(
       (state) =>
-        `    private ${className}${
+        `    public ${className}${
           state.name
         }State ${state.name.toLowerCase()}State;`
     )
     .join("\n");
 
-  const controllerStateInitializations = enabledStates
+  const stateInitializations = enabledStates
     .map(
       (state) =>
-        `        ${state.name.toLowerCase()}State = new ${className}${
+        `        this.${state.name.toLowerCase()}State = new ${className}${
           state.name
-        }State();`
+        }State(player);`
     )
     .join("\n");
 
-  const controllerStateMethods = enabledStates
-    .map(
-      (state) =>
-        `    public void Set${state.name}State()
-    {
-        ChangeState(${state.name.toLowerCase()}State);
-    }`
-    )
-    .join("\n\n");
+  const stateMachineCode = `using System;
 
+// State Machine
+[Serializable]
+public class ${className}StateMachine
+{
+    public I${className}State CurrentState { get; private set; }
+    
+    // State references
+${stateDeclarations}
+    
+    public ${className}StateMachine(${className} player)
+    {
+        // Initialize states
+${stateInitializations}
+    }
+    
+    public void Initialize(I${className}State startingState)
+    {
+        CurrentState = startingState;
+        startingState.Enter();
+    }
+    
+    public void TransitionTo(I${className}State nextState)
+    {
+        CurrentState.Exit();
+        CurrentState = nextState;
+        nextState.Enter();
+    }
+    
+    public void Update()
+    {
+        if (CurrentState != null)
+        {
+            CurrentState.Update();
+        }
+    }
+}`;
+  files.stateMachine = stateMachineCode;
+  names.stateMachine = `${className}StateMachine.cs`;
+
+  // C. Player/Controller class
   const callbackImplementations = enabledCallbacks
     .map((callback) => {
-      return `    ${
-        callback.name === "HandleEvent" ? "public" : "private"
-      } void ${callback.name}(${callback.paramType} ${callback.paramName})
+      const params =
+        callback.paramType && callback.paramName
+          ? `${callback.paramType} ${callback.paramName}`
+          : "";
+      return `    private void ${callback.name}(${params})
     {
-        if (currentState != null)
-        {
-            currentState.${callback.name}(this, ${callback.paramName});
-        }
+        // Forward to current state if needed
     }`;
     })
     .join("\n\n");
@@ -98,140 +120,67 @@ ${callbackMethodsCode ? callbackMethodsCode : ""}
   const controllerCode = `using UnityEngine;
 
 // Context class
-public class ${className}Controller : MonoBehaviour
+public class ${className} : MonoBehaviour
 {
-    // References to all possible states
-${controllerStateDeclarations}
-    
-    // Current state
-    private I${className}State currentState;
-    ${
-      hierarchicalStates
-        ? `// Parent state for hierarchical state machine
-private I${className}State parentState;`
-        : ""
-    }
-    
+    public ${className}StateMachine stateMachine;
     
     private void Awake()
     {
-        // Initialize states
-${controllerStateInitializations}
-    }
-    
-    private void Start()
-    {
-        // Set initial state
-        ChangeState(${
+        // Initialize state machine
+        stateMachine = new ${className}StateMachine(this);
+        
+        // Set initial state (change this to your desired starting state)
+        stateMachine.Initialize(stateMachine.${
           enabledStates.length > 0
             ? enabledStates[0].name.toLowerCase() + "State"
-            : "null"
+            : "idleState"
         });
     }
     
     private void Update()
     {
-        if (currentState != null)
-        {
-            currentState.UpdateState(this);
-            ${
-              hierarchicalStates
-                ? `// Update parent state if it exists
-if (parentState != null)
-{
-    parentState.UpdateState(this);
-}`
-                : ""
-            }
-        }
-    }
-    
-${callbackImplementations}
-    
-    // Method to change states
-    public void ChangeState(I${className}State newState)
-    {
-        // Exit current state
-        if (currentState != null)
-        {
-            currentState.ExitState(this);
-        }
-        
-        // Change to new state
-        currentState = newState;
-        
-        // Enter new state
-        if (currentState != null)
-        {
-            currentState.EnterState(this);
-        }
-    }
-    
-    ${
-      hierarchicalStates
-        ? `// Set parent state for hierarchical state machine
-    public void SetParentState(I${className}State newParentState)
-    {
-        if (parentState != null)
-        {
-            parentState.ExitState(this);
-        }
-        
-        parentState = newParentState;
-        
-        if (parentState != null)
-        {
-            parentState.EnterState(this);
-        }
-    }`
-        : ""
-    }
-    
-    // State change methods
-${controllerStateMethods}
-
+        // Update current state
+        stateMachine.Update();
+    }${enabledCallbacks.length > 0 ? "\n\n" + callbackImplementations : ""}
 }`;
   files.controller = controllerCode;
-  names.controller = `${className}Controller.cs`;
+  names.controller = `${className}.cs`;
 
-  // Generate state files for each enabled state
+  // D. Generate state files for each enabled state
   enabledStates.forEach((state) => {
-    const callbackMethodsImplementation = enabledCallbacks
-      .map((callback) => {
-        return `    public void ${
-          callback.name
-        }(${className}Controller context, ${callback.paramType} ${
-          callback.paramName
-        })
-    {
-        // Handle ${callback.name.toLowerCase()} events
-    }`;
-      })
-      .join("\n\n");
+    const stateCode = `using UnityEngine;
 
-    const stateLogic = `    public void EnterState(${className}Controller context)
+// Concrete state: ${state.name}
+public class ${className}${state.name}State : I${className}State
+{
+    private ${className} player;
+    
+    public ${className}${state.name}State(${className} player)
     {
+        this.player = player;
+    }
+    
+    public void Enter()
+    {
+        // Code that runs when we first enter the state
         Debug.Log("Entering ${state.name} State");
     }
     
-    public void UpdateState(${className}Controller context)
+    public void Update()
     {
-        Debug.Log("Update ${state.name} State");
+        // Per-frame logic, include condition to transition to a new state
+        // Example:
+        // if (someCondition)
+        // {
+        //     player.stateMachine.TransitionTo(player.stateMachine.otherState);
+        // }
     }
     
-    public void ExitState(${className}Controller context)
+    public void Exit()
     {
+        // Code that runs when we exit the state
         Debug.Log("Exiting ${state.name} State");
-    }`;
-
-    const stateCode = `using UnityEngine;
-
-// Concrete state
-public class ${className}${state.name}State : I${className}State
-{
-${stateLogic}
-    
-${callbackMethodsImplementation}
+    }
 }`;
 
     files[`${state.name.toLowerCase()}State`] = stateCode;

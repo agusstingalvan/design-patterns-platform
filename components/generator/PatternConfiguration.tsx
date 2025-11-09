@@ -10,10 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Plus, Minus } from "lucide-react";
-import {
-  CallbackMethodsConfig,
-  CallbackMethod,
-} from "./CallbackMethodsConfig";
+import { CallbackMethodsConfig, CallbackMethod } from "./CallbackMethodsConfig";
 
 type SingletonVariant = "minimal" | "persistent" | "generic";
 
@@ -170,11 +167,9 @@ interface State {
 
 interface StateConfigProps {
   className: string;
-  hierarchicalStates: boolean;
   states: State[];
   callbackMethods: CallbackMethod[];
   onClassNameChange: (value: string) => void;
-  onHierarchicalStatesChange: (value: boolean) => void;
   onStatesChange: (states: State[]) => void;
   onCallbackMethodsChange: (methods: CallbackMethod[]) => void;
 }
