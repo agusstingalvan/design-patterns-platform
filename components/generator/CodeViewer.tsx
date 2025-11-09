@@ -11,7 +11,15 @@ import {
   Download,
   Archive,
   FileText,
+  Wand2,
 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import JSZip from "jszip";
 import FileSaver from "file-saver";
 
@@ -97,57 +105,56 @@ export function CodeViewer({
             Uso
           </TabsTrigger>
         </TabsList>
-        <div className="flex gap-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleCopyReadme}
-            title="Copiar README.md"
-          >
-            {copiedReadme ? (
-              <>
-                <Check className="mr-2 h-4 w-4" />
-                ¡Copiado!
-              </>
-            ) : (
-              <>
-                <FileText className="mr-2 h-4 w-4" />
-                README
-              </>
-            )}
-          </Button>
-          {/* <Button
-            variant="outline"
-            size="sm"
-            onClick={handleDownloadReadme}
-            title="Descargar README.md"
-          >
-            <Download className="mr-2 h-4 w-4" />
-            README
-          </Button> */}
-          <div className="border-l mx-1" />
-          <Button variant="ghost" size="sm" onClick={handleCopy}>
-            {copied ? (
-              <>
-                <Check className="mr-2 h-4 w-4" />
-                ¡Copiado!
-              </>
-            ) : (
-              <>
-                <ClipboardCopy className="mr-2 h-4 w-4" />
-                Copiar
-              </>
-            )}
-          </Button>
-          <Button variant="ghost" size="sm" onClick={handleDownloadFile}>
-            <Download className="mr-2 h-4 w-4" />
-            Descargar
-          </Button>
-          <Button variant="ghost" size="sm" onClick={handleDownloadAll}>
-            <Archive className="mr-2 h-4 w-4" />
-            Descargar Todo
-          </Button>
-        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm">
+              <Wand2 className="mr-2 h-4 w-4" />
+              Acciones
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuItem onClick={handleCopyReadme}>
+              {copiedReadme ? (
+                <>
+                  <Check className="mr-2 h-4 w-4" />
+                  README Copiado
+                </>
+              ) : (
+                <>
+                  <FileText className="mr-2 h-4 w-4" />
+                  Copiar README
+                </>
+              )}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleDownloadReadme}>
+              <Download className="mr-2 h-4 w-4" />
+              Descargar README
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleCopy}>
+              {copied ? (
+                <>
+                  <Check className="mr-2 h-4 w-4" />
+                  Código Copiado
+                </>
+              ) : (
+                <>
+                  <ClipboardCopy className="mr-2 h-4 w-4" />
+                  Copiar Código
+                </>
+              )}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleDownloadFile}>
+              <Download className="mr-2 h-4 w-4" />
+              Descargar Archivo
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleDownloadAll}>
+              <Archive className="mr-2 h-4 w-4" />
+              Descargar Todo (ZIP)
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <TabsContent value="code" className="m-0 pt-[50px]">
         <div className="border-b">
