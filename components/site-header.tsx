@@ -10,7 +10,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ModeToggle } from "@/components/mode-toggle";
-import { BookOpen, Code2, GitFork, LogOut, Menu, User } from "lucide-react";
+import {
+  BookOpen,
+  Code2,
+  GitFork,
+  LogOut,
+  Menu,
+  User,
+  FolderOpen,
+} from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -146,6 +154,13 @@ export function SiteHeader() {
                       )}
                     </div>
                   </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/collections" className="cursor-pointer">
+                      <FolderOpen className="mr-2 h-4 w-4" />
+                      <span>Colecciones</span>
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     className="cursor-pointer"
