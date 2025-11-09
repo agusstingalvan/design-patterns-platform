@@ -36,6 +36,26 @@ export default function GeneratorPage() {
   >("minimal");
   const [persistence, setPersistence] = useState(false);
   const [lazyInstantiation, setLazyInstantiation] = useState(false);
+  const [singletonCallbackMethods, setSingletonCallbackMethods] = useState([
+    {
+      name: "OnEnable",
+      enabled: true,
+      paramType: "",
+      paramName: "",
+    },
+    {
+      name: "OnDisable",
+      enabled: false,
+      paramType: "",
+      paramName: "",
+    },
+    {
+      name: "OnDestroy",
+      enabled: false,
+      paramType: "",
+      paramName: "",
+    },
+  ]);
 
   // State pattern options
   const [hierarchicalStates, setHierarchicalStates] = useState(false);
@@ -44,7 +64,7 @@ export default function GeneratorPage() {
     { name: "Move", enabled: true },
     { name: "Action", enabled: true },
   ]);
-  const [callbackMethods, setCallbackMethods] = useState([
+  const [stateCallbackMethods, setStateCallbackMethods] = useState([
     {
       name: "OnTriggerEnter",
       enabled: true,
@@ -74,8 +94,9 @@ export default function GeneratorPage() {
     singletonVariant,
     persistence,
     lazyInstantiation,
+    singletonCallbackMethods,
     hierarchicalStates,
-    callbackMethods,
+    stateCallbackMethods,
     states,
   ]);
 
@@ -86,6 +107,7 @@ export default function GeneratorPage() {
         variant: singletonVariant,
         persistence,
         lazyInstantiation,
+        callbackMethods: singletonCallbackMethods,
       });
       setGeneratedFiles(files);
       setFileNames(names);
@@ -94,7 +116,7 @@ export default function GeneratorPage() {
         className,
         hierarchicalStates,
         states,
-        callbackMethods,
+        callbackMethods: stateCallbackMethods,
       });
       setGeneratedFiles(files);
       setFileNames(names);
@@ -153,10 +175,12 @@ export default function GeneratorPage() {
                         variant={singletonVariant}
                         persistence={persistence}
                         lazyInstantiation={lazyInstantiation}
+                        callbackMethods={singletonCallbackMethods}
                         onClassNameChange={setClassName}
                         onVariantChange={setSingletonVariant}
                         onPersistenceChange={setPersistence}
                         onLazyInstantiationChange={setLazyInstantiation}
+                        onCallbackMethodsChange={setSingletonCallbackMethods}
                       />
                     )}
 
@@ -165,11 +189,11 @@ export default function GeneratorPage() {
                         className={className}
                         hierarchicalStates={hierarchicalStates}
                         states={states}
-                        callbackMethods={callbackMethods}
+                        callbackMethods={stateCallbackMethods}
                         onClassNameChange={setClassName}
                         onHierarchicalStatesChange={setHierarchicalStates}
                         onStatesChange={setStates}
-                        onCallbackMethodsChange={setCallbackMethods}
+                        onCallbackMethodsChange={setStateCallbackMethods}
                       />
                     )}
                   </div>

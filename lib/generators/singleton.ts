@@ -1,10 +1,18 @@
 export type SingletonVariant = "minimal" | "persistent" | "generic";
 
+export interface CallbackMethod {
+  name: string;
+  enabled: boolean;
+  paramType: string;
+  paramName: string;
+}
+
 export interface SingletonOptions {
   className: string;
   variant: SingletonVariant;
   persistence: boolean;
   lazyInstantiation: boolean;
+  callbackMethods: CallbackMethod[];
 }
 
 export interface GeneratedFiles {
@@ -19,9 +27,40 @@ export function generateSingletonCode(options: SingletonOptions): {
   files: GeneratedFiles;
   names: FileNames;
 } {
-  const { className, variant, persistence, lazyInstantiation } = options;
+  const {
+    className,
+    variant,
+    persistence,
+    lazyInstantiation,
+    callbackMethods,
+  } = options;
   const files: GeneratedFiles = {};
   const names: FileNames = {};
+
+  // Filter enabled callbacks
+  const enabledCallbacks = callbackMethods.filter((cb) => cb.enabled);
+
+  // Generate callback methods code
+  const generateCallbackMethods = () => {
+    if (enabledCallbacks.length === 0) return "";
+
+    return (
+      "\n" +
+      enabledCallbacks
+        .map((callback) => {
+          const params =
+            callback.paramType && callback.paramName
+              ? `${callback.paramType} ${callback.paramName}`
+              : "";
+          return `    
+    private void ${callback.name}(${params})
+    {
+        // Add your ${callback.name} implementation here
+    }`;
+        })
+        .join("\n")
+    );
+  };
 
   if (variant === "minimal") {
     // Código mínimo del patrón
@@ -41,7 +80,7 @@ public class ${className} : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
+    }${generateCallbackMethods()}
 }`;
     files.main = minimalCode;
     names.main = `${className}.cs`;
@@ -101,7 +140,7 @@ public class ${className} : MonoBehaviour
         }
     }`
         : ""
-    }
+    }${generateCallbackMethods()}
 }`;
     files.main = persistentCode;
     names.main = `${className}.cs`;
@@ -170,7 +209,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
 public class ${className} : Singleton<${className}>
 {
     // Implementation of ${className}
-    // Add your custom fields and methods here
+    // Add your custom fields and methods here${generateCallbackMethods()}
 }`;
     files.implementation = concreteImplementation;
     names.implementation = `${className}.cs`;
