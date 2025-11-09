@@ -93,8 +93,8 @@ export function CollectionsClient({
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
-      <main className="flex-1 container py-8">
-        <div className="space-y-6">
+      <main className="flex-1 py-8 flex justify-center">
+        <div className="container max-w-7xl space-y-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
               <h1 className="text-3xl font-bold tracking-tight">Colecciones</h1>
