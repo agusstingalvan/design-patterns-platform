@@ -1,11 +1,25 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { BookOpen, Code2, Gamepad2, GitFork, Layers, LayoutTemplate } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
-import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  BookOpen,
+  Code2,
+  Gamepad2,
+  GitFork,
+  Layers,
+  LayoutTemplate,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 
 export default function Home() {
   return (
@@ -18,30 +32,31 @@ export default function Home() {
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                    Design Patterns for Game Development
+                    Patrones de Diseño para Desarrollo de Videojuegos
                   </h1>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    Learn, visualize, and implement design patterns in your game projects with interactive examples and
-                    code generation.
+                    Aprende, visualiza e implementa patrones de diseño en tus
+                    proyectos de juegos con ejemplos interactivos y generación
+                    de código.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Link href="/patterns">
                     <Button size="lg">
-                      Explore Patterns
+                      Explorar Patrones
                       <BookOpen className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
                   <Link href="/diagram">
                     <Button size="lg" variant="outline">
-                      Create Diagrams
+                      Crear Diagramas
                       <GitFork className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
                 </div>
               </div>
               <Image
-                alt="Hero image showing design pattern diagram"
+                alt="Imagen principal mostrando diagrama de patrón de diseño"
                 className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
                 height={310}
                 src="/placeholder.svg?height=310&width=550"
@@ -54,9 +69,12 @@ export default function Home() {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Key Features</h2>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                  Características Principales
+                </h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Everything you need to understand and implement design patterns in your games
+                  Todo lo que necesitas para comprender e implementar patrones
+                  de diseño en tus juegos
                 </p>
               </div>
             </div>
@@ -64,51 +82,59 @@ export default function Home() {
               <Card>
                 <CardHeader>
                   <BookOpen className="h-10 w-10 mb-2 text-primary" />
-                  <CardTitle>Interactive Documentation</CardTitle>
+                  <CardTitle>Documentación Interactiva</CardTitle>
                   <CardDescription>
-                    Comprehensive guides for each design pattern with real-world game examples
+                    Guías completas para cada patrón de diseño con ejemplos
+                    reales de videojuegos
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  Learn about creational, structural, and behavioral patterns with detailed explanations tailored for
-                  game development.
+                  Aprende sobre patrones creacionales, estructurales y de
+                  comportamiento con explicaciones detalladas adaptadas para el
+                  desarrollo de videojuegos.
                 </CardContent>
                 <CardFooter>
                   <Link href="/patterns" className="w-full">
-                    <Button className="w-full">Browse Patterns</Button>
+                    <Button className="w-full">Explorar Patrones</Button>
                   </Link>
                 </CardFooter>
               </Card>
               <Card>
                 <CardHeader>
                   <Code2 className="h-10 w-10 mb-2 text-primary" />
-                  <CardTitle>Code Generation</CardTitle>
-                  <CardDescription>Customize and generate code for your specific game needs</CardDescription>
+                  <CardTitle>Generación de Código</CardTitle>
+                  <CardDescription>
+                    Personaliza y genera código para las necesidades específicas
+                    de tu juego
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  Adapt pattern implementations with your own class names and structures, then export directly to Unity
-                  or Godot.
+                  Adapta implementaciones de patrones con tus propios nombres de
+                  clases y estructuras, luego exporta directamente a Unity o
+                  Godot.
                 </CardContent>
                 <CardFooter>
                   <Link href="/generator" className="w-full">
-                    <Button className="w-full">Generate Code</Button>
+                    <Button className="w-full">Generar Código</Button>
                   </Link>
                 </CardFooter>
               </Card>
               <Card>
                 <CardHeader>
                   <GitFork className="h-10 w-10 mb-2 text-primary" />
-                  <CardTitle>Pattern Diagramming</CardTitle>
+                  <CardTitle>Diagramas de Patrones</CardTitle>
                   <CardDescription>
-                    Visualize and design pattern relationships with an interactive diagram editor
+                    Visualiza y diseña relaciones de patrones con un editor de
+                    diagramas interactivo
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  Create, save, and share UML-style diagrams to plan your game architecture before implementation.
+                  Crea, guarda y comparte diagramas estilo UML para planificar
+                  la arquitectura de tu juego antes de implementarla.
                 </CardContent>
                 <CardFooter>
                   <Link href="/diagram" className="w-full">
-                    <Button className="w-full">Create Diagrams</Button>
+                    <Button className="w-full">Crear Diagramas</Button>
                   </Link>
                 </CardFooter>
               </Card>
@@ -119,20 +145,28 @@ export default function Home() {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Pattern Categories</h2>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                  Categorías de Patrones
+                </h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Explore design patterns organized by their purpose and usage in game development
+                  Explora patrones de diseño organizados por su propósito y uso
+                  en el desarrollo de videojuegos
                 </p>
               </div>
             </div>
             <div className="mx-auto max-w-3xl py-12">
               <Tabs defaultValue="creational" className="w-full">
                 <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="creational">Creational</TabsTrigger>
-                  <TabsTrigger value="structural">Structural</TabsTrigger>
-                  <TabsTrigger value="behavioral">Behavioral</TabsTrigger>
+                  <TabsTrigger value="creational">Creacionales</TabsTrigger>
+                  <TabsTrigger value="structural">Estructurales</TabsTrigger>
+                  <TabsTrigger value="behavioral">
+                    De Comportamiento
+                  </TabsTrigger>
                 </TabsList>
-                <TabsContent value="creational" className="p-4 border rounded-md mt-4">
+                <TabsContent
+                  value="creational"
+                  className="p-4 border rounded-md mt-4"
+                >
                   <div className="grid gap-4 md:grid-cols-2">
                     <Link href="/patterns/singleton">
                       <Card className="h-full hover:bg-muted/50 transition-colors">
@@ -144,8 +178,9 @@ export default function Home() {
                         </CardHeader>
                         <CardContent>
                           <p className="text-sm text-muted-foreground">
-                            Ensure a class has only one instance and provide a global point of access to it. Perfect for
-                            game managers and services.
+                            Asegura que una clase tenga solo una instancia y
+                            proporciona un punto de acceso global a ella.
+                            Perfecto para gestores de juego y servicios.
                           </p>
                         </CardContent>
                       </Card>
@@ -160,15 +195,19 @@ export default function Home() {
                         </CardHeader>
                         <CardContent>
                           <p className="text-sm text-muted-foreground">
-                            Define an interface for creating an object, but let subclasses decide which class to
-                            instantiate. Great for enemy or item spawning.
+                            Define una interfaz para crear un objeto, pero
+                            permite que las subclases decidan qué clase
+                            instanciar. Genial para generar enemigos o ítems.
                           </p>
                         </CardContent>
                       </Card>
                     </Link>
                   </div>
                 </TabsContent>
-                <TabsContent value="structural" className="p-4 border rounded-md mt-4">
+                <TabsContent
+                  value="structural"
+                  className="p-4 border rounded-md mt-4"
+                >
                   <div className="grid gap-4 md:grid-cols-2">
                     <Link href="/patterns/adapter">
                       <Card className="h-full hover:bg-muted/50 transition-colors">
@@ -180,8 +219,9 @@ export default function Home() {
                         </CardHeader>
                         <CardContent>
                           <p className="text-sm text-muted-foreground">
-                            Convert the interface of a class into another interface clients expect. Useful for
-                            integrating third-party systems.
+                            Convierte la interfaz de una clase en otra interfaz
+                            que los clientes esperan. Útil para integrar
+                            sistemas de terceros.
                           </p>
                         </CardContent>
                       </Card>
@@ -196,15 +236,19 @@ export default function Home() {
                         </CardHeader>
                         <CardContent>
                           <p className="text-sm text-muted-foreground">
-                            Compose objects into tree structures to represent part-whole hierarchies. Perfect for UI
-                            elements and scene graphs.
+                            Compone objetos en estructuras de árbol para
+                            representar jerarquías parte-todo. Perfecto para
+                            elementos de UI y gráficos de escena.
                           </p>
                         </CardContent>
                       </Card>
                     </Link>
                   </div>
                 </TabsContent>
-                <TabsContent value="behavioral" className="p-4 border rounded-md mt-4">
+                <TabsContent
+                  value="behavioral"
+                  className="p-4 border rounded-md mt-4"
+                >
                   <div className="grid gap-4 md:grid-cols-2">
                     <Link href="/patterns/state">
                       <Card className="h-full hover:bg-muted/50 transition-colors">
@@ -216,8 +260,9 @@ export default function Home() {
                         </CardHeader>
                         <CardContent>
                           <p className="text-sm text-muted-foreground">
-                            Allow an object to alter its behavior when its internal state changes. Essential for
-                            character controllers and AI.
+                            Permite que un objeto altere su comportamiento
+                            cuando su estado interno cambia. Esencial para
+                            controladores de personajes e IA.
                           </p>
                         </CardContent>
                       </Card>
@@ -232,8 +277,10 @@ export default function Home() {
                         </CardHeader>
                         <CardContent>
                           <p className="text-sm text-muted-foreground">
-                            Define a one-to-many dependency between objects so that when one object changes state, all
-                            its dependents are notified. Great for event systems.
+                            Define una dependencia de uno a muchos entre objetos
+                            para que cuando un objeto cambie de estado, todos
+                            sus dependientes sean notificados. Genial para
+                            sistemas de eventos.
                           </p>
                         </CardContent>
                       </Card>
@@ -247,6 +294,5 @@ export default function Home() {
       </main>
       <SiteFooter />
     </div>
-  )
+  );
 }
-
