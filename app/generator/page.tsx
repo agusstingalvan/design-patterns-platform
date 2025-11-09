@@ -85,6 +85,15 @@ export default function GeneratorPage() {
     },
   ]);
 
+  // Change default className when pattern changes
+  useEffect(() => {
+    if (pattern === "singleton") {
+      setClassName("GameManager");
+    } else if (pattern === "state") {
+      setClassName("EnemyExample");
+    }
+  }, [pattern]);
+
   // Generate code when pattern, className, or options change
   useEffect(() => {
     generateCode();
