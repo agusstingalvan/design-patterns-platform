@@ -205,8 +205,8 @@ void Update() {
               <div className="rounded-md bg-blue-50 dark:bg-blue-950 p-3 text-sm">
                 <p className="font-medium mb-1">Pool Custom con Stack</p>
                 <p className="text-xs">
-                  Implementación mínima usando Stack{`<T>`}. Ideal para proyectos
-                  sin dependencias adicionales.
+                  Implementación mínima usando Stack{`<T>`}. Ideal para
+                  proyectos sin dependencias adicionales.
                 </p>
               </div>
               <h4 className="font-medium text-sm mt-4">
@@ -224,7 +224,9 @@ void Update() {
           {objectPoolVariant === "generic" && (
             <div className="space-y-2 my-3">
               <div className="rounded-md bg-blue-50 dark:bg-blue-950 p-3 text-sm">
-                <p className="font-medium mb-1">Pool Genérico con UnityEngine.Pool</p>
+                <p className="font-medium mb-1">
+                  Pool Genérico con UnityEngine.Pool
+                </p>
                 <p className="text-xs">
                   Implementación con la API oficial de Unity. Ofrece más
                   configuración y control del ciclo de vida.
@@ -234,12 +236,16 @@ void Update() {
                 Pasos de Implementación:
               </h4>
               <ol className="list-decimal list-inside text-sm text-muted-foreground space-y-1">
+                <li>Implementa IPooledWithRef{`<T>`} en tu objeto pooleable</li>
                 <li>
-                  Implementa IPooledWithRef{`<T>`} en tu objeto pooleable
+                  Asigna el prefab en {className}Pool{`<T>`}
                 </li>
-                <li>Asigna el prefab en {className}Pool{`<T>`}</li>
-                <li>Configura defaultCapacity y maxSize según tus necesidades</li>
-                <li>Usa pool.Get() para obtener y pool.Release() para devolver</li>
+                <li>
+                  Configura defaultCapacity y maxSize según tus necesidades
+                </li>
+                <li>
+                  Usa pool.Get() para obtener y pool.Release() para devolver
+                </li>
                 <li>
                   Opcionalmente implementa auto-release llamando a Release()
                   internamente
@@ -296,20 +302,6 @@ void OnBecameInvisible()
           </div>
         </>
       )}
-
-      <div className="pt-4 border-t mt-4">
-        <h3 className="font-medium mb-2">Integración con Diagramas</h3>
-        <p className="text-sm text-muted-foreground mb-3">
-          Visualiza este patrón con nuestro editor de diagramas para comprender
-          mejor su estructura y relaciones.
-        </p>
-        <Link href={generateDiagramUrl()}>
-          <Button>
-            <GitFork className="mr-2 h-4 w-4" />
-            Abrir en Editor de Diagramas
-          </Button>
-        </Link>
-      </div>
     </>
   );
 }

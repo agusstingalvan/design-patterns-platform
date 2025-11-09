@@ -99,7 +99,7 @@ export function CodeViewer({
         </TabsList>
         <div className="flex gap-2">
           <Button
-            variant="outline"
+            variant="ghost"
             size="sm"
             onClick={handleCopyReadme}
             title="Copiar README.md"
@@ -107,16 +107,16 @@ export function CodeViewer({
             {copiedReadme ? (
               <>
                 <Check className="mr-2 h-4 w-4" />
-                README Copiado
+                ¡Copiado!
               </>
             ) : (
               <>
                 <FileText className="mr-2 h-4 w-4" />
-                Copiar README
+                README
               </>
             )}
           </Button>
-          <Button
+          {/* <Button
             variant="outline"
             size="sm"
             onClick={handleDownloadReadme}
@@ -124,7 +124,7 @@ export function CodeViewer({
           >
             <Download className="mr-2 h-4 w-4" />
             README
-          </Button>
+          </Button> */}
           <div className="border-l mx-1" />
           <Button variant="ghost" size="sm" onClick={handleCopy}>
             {copied ? (
