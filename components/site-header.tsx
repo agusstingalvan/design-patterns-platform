@@ -19,15 +19,13 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4">
       <div className="container flex h-14 items-center">
         <div className="mr-4 flex">
-          <Link href="/generator" className="mr-6 flex items-center space-x-2">
+          <Link href="/" className="mr-6 flex items-center space-x-2">
             <GitFork className="h-6 w-6" />
             <div className="flex flex-col ">
               <span className="hidden font-bold sm:inline-block">
                 Game Design Patterns
               </span>
-              <span className="text-sm text-foreground/60">
-                Prototipo - TESIS
-              </span>
+              <span className="text-sm text-foreground/60">TESIS</span>
             </div>
           </Link>
           <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
@@ -51,14 +49,14 @@ export function SiteHeader() {
         </div>
         <div className="flex flex-1 items-center justify-end space-x-2">
           <nav className="flex items-center space-x-4">
-            <ModeToggle />
+            {/* <ModeToggle /> */}
             <Link
               href="/generator"
               className="transition-colors hover:text-foreground/80 text-foreground/60"
             >
               <div className="flex items-center gap-1">
                 <Code2 className="h-4 w-4" />
-                <span>Code Generator</span>
+                <span>Generador de Patrones</span>
               </div>
             </Link>
             {/* <DropdownMenu>
