@@ -20,8 +20,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { redirect } from "next/navigation";
 
 export default function Home() {
+  return redirect("/generator");
+
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
