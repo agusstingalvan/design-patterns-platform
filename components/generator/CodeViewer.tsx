@@ -12,6 +12,7 @@ import {
   Archive,
   FileText,
   Wand2,
+  Save,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -20,6 +21,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { SavePatternDialog } from "./SavePatternDialog";
 import JSZip from "jszip";
 import FileSaver from "file-saver";
 
@@ -43,6 +45,7 @@ export function CodeViewer({
   );
   const [copied, setCopied] = useState(false);
   const [copiedReadme, setCopiedReadme] = useState(false);
+  const [saveDialogOpen, setSaveDialogOpen] = useState(false);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(generatedFiles[activeFile] || "");
@@ -93,98 +96,112 @@ export function CodeViewer({
   };
 
   return (
-    <Tabs defaultValue="code">
-      <div className="flex items-center justify-between border-b px-4 absolute top-0 right-0 left-0 z-10">
-        <TabsList className="h-12">
-          <TabsTrigger value="code" className="flex items-center">
-            <Code2 className="mr-2 h-4 w-4" />
-            Código
-          </TabsTrigger>
-          <TabsTrigger value="usage" className="flex items-center">
-            <Code2 className="mr-2 h-4 w-4" />
-            Uso
-          </TabsTrigger>
-        </TabsList>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm">
-              <Wand2 className="mr-2 h-4 w-4" />
-              Acciones
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuItem onClick={handleCopyReadme}>
-              {copiedReadme ? (
-                <>
-                  <Check className="mr-2 h-4 w-4" />
-                  README Copiado
-                </>
-              ) : (
-                <>
-                  <FileText className="mr-2 h-4 w-4" />
-                  Copiar README
-                </>
-              )}
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleDownloadReadme}>
-              <Download className="mr-2 h-4 w-4" />
-              Descargar README
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleCopy}>
-              {copied ? (
-                <>
-                  <Check className="mr-2 h-4 w-4" />
-                  Código Copiado
-                </>
-              ) : (
-                <>
-                  <ClipboardCopy className="mr-2 h-4 w-4" />
-                  Copiar Código
-                </>
-              )}
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleDownloadFile}>
-              <Download className="mr-2 h-4 w-4" />
-              Descargar Archivo
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleDownloadAll}>
-              <Archive className="mr-2 h-4 w-4" />
-              Descargar Todo (ZIP)
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <TabsContent value="code" className="m-0 pt-[50px]">
-        <div className="border-b">
-          <div className="flex overflow-x-auto">
-            {Object.keys(generatedFiles).map((key) => (
-              <button
-                key={key}
-                className={`px-4 py-2 text-sm whitespace-nowrap ${
-                  activeFile === key
-                    ? "border-b-2 border-primary font-medium"
-                    : "text-muted-foreground"
-                }`}
-                onClick={() => setActiveFile(key)}
-              >
-                {fileNames[key] || key}
-              </button>
-            ))}
+    <>
+      <SavePatternDialog
+        open={saveDialogOpen}
+        onOpenChange={setSaveDialogOpen}
+        generatedFiles={generatedFiles}
+        pattern={pattern}
+        className={className}
+      />
+      <Tabs defaultValue="code">
+        <div className="flex items-center justify-between border-b px-4 absolute top-0 right-0 left-0 z-10">
+          <TabsList className="h-12">
+            <TabsTrigger value="code" className="flex items-center">
+              <Code2 className="mr-2 h-4 w-4" />
+              Código
+            </TabsTrigger>
+            <TabsTrigger value="usage" className="flex items-center">
+              <Code2 className="mr-2 h-4 w-4" />
+              Uso
+            </TabsTrigger>
+          </TabsList>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm">
+                <Wand2 className="mr-2 h-4 w-4" />
+                Acciones
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuItem onClick={() => setSaveDialogOpen(true)}>
+                <Save className="mr-2 h-4 w-4" />
+                Guardar Patrón
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleCopyReadme}>
+                {copiedReadme ? (
+                  <>
+                    <Check className="mr-2 h-4 w-4" />
+                    README Copiado
+                  </>
+                ) : (
+                  <>
+                    <FileText className="mr-2 h-4 w-4" />
+                    Copiar README
+                  </>
+                )}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleDownloadReadme}>
+                <Download className="mr-2 h-4 w-4" />
+                Descargar README
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleCopy}>
+                {copied ? (
+                  <>
+                    <Check className="mr-2 h-4 w-4" />
+                    Código Copiado
+                  </>
+                ) : (
+                  <>
+                    <ClipboardCopy className="mr-2 h-4 w-4" />
+                    Copiar Código
+                  </>
+                )}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleDownloadFile}>
+                <Download className="mr-2 h-4 w-4" />
+                Descargar Archivo
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleDownloadAll}>
+                <Archive className="mr-2 h-4 w-4" />
+                Descargar Todo (ZIP)
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <TabsContent value="code" className="m-0 pt-[50px]">
+          <div className="border-b">
+            <div className="flex overflow-x-auto">
+              {Object.keys(generatedFiles).map((key) => (
+                <button
+                  key={key}
+                  className={`px-4 py-2 text-sm whitespace-nowrap ${
+                    activeFile === key
+                      ? "border-b-2 border-primary font-medium"
+                      : "text-muted-foreground"
+                  }`}
+                  onClick={() => setActiveFile(key)}
+                >
+                  {fileNames[key] || key}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="relative h-[600px] min-h-[400px]">
-          <Textarea
-            className="font-mono text-sm h-full rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0"
-            value={generatedFiles[activeFile] || ""}
-            readOnly
-          />
-        </div>
-      </TabsContent>
-      <TabsContent value="usage" className="p-4 space-y-4">
-        {usageContent}
-      </TabsContent>
-    </Tabs>
+          <div className="relative h-[600px] min-h-[400px]">
+            <Textarea
+              className="font-mono text-sm h-full rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              value={generatedFiles[activeFile] || ""}
+              readOnly
+            />
+          </div>
+        </TabsContent>
+        <TabsContent value="usage" className="p-4 space-y-4">
+          {usageContent}
+        </TabsContent>
+      </Tabs>
+    </>
   );
 }
