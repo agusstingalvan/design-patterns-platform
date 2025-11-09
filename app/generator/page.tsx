@@ -13,7 +13,10 @@ import {
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Gamepad2 } from "lucide-react";
-import { SingletonConfig, StateConfig } from "@/components/generator/PatternConfiguration";
+import {
+  SingletonConfig,
+  StateConfig,
+} from "@/components/generator/PatternConfiguration";
 import { CodeViewer } from "@/components/generator/CodeViewer";
 import { UsageInfo } from "@/components/generator/UsageInfo";
 import { generateSingletonCode } from "@/lib/generators/singleton";
@@ -28,8 +31,11 @@ export default function GeneratorPage() {
   const [fileNames, setFileNames] = useState<{ [key: string]: string }>({});
 
   // Singleton options
-  const [lazyInit, setLazyInit] = useState(false);
-  const [threadSafe, setThreadSafe] = useState(false);
+  const [singletonVariant, setSingletonVariant] = useState<
+    "minimal" | "persistent" | "generic"
+  >("minimal");
+  const [persistence, setPersistence] = useState(false);
+  const [lazyInstantiation, setLazyInstantiation] = useState(false);
 
   // State pattern options
   const [hierarchicalStates, setHierarchicalStates] = useState(false);
@@ -65,8 +71,9 @@ export default function GeneratorPage() {
   }, [
     pattern,
     className,
-    lazyInit,
-    threadSafe,
+    singletonVariant,
+    persistence,
+    lazyInstantiation,
     hierarchicalStates,
     callbackMethods,
     states,
@@ -76,8 +83,9 @@ export default function GeneratorPage() {
     if (pattern === "singleton") {
       const { files, names } = generateSingletonCode({
         className,
-        lazyInit,
-        threadSafe,
+        variant: singletonVariant,
+        persistence,
+        lazyInstantiation,
       });
       setGeneratedFiles(files);
       setFileNames(names);
@@ -142,11 +150,13 @@ export default function GeneratorPage() {
                     {pattern === "singleton" && (
                       <SingletonConfig
                         className={className}
-                        lazyInit={lazyInit}
-                        threadSafe={threadSafe}
+                        variant={singletonVariant}
+                        persistence={persistence}
+                        lazyInstantiation={lazyInstantiation}
                         onClassNameChange={setClassName}
-                        onLazyInitChange={setLazyInit}
-                        onThreadSafeChange={setThreadSafe}
+                        onVariantChange={setSingletonVariant}
+                        onPersistenceChange={setPersistence}
+                        onLazyInstantiationChange={setLazyInstantiation}
                       />
                     )}
 
@@ -178,6 +188,7 @@ export default function GeneratorPage() {
                         pattern={pattern}
                         className={className}
                         states={states}
+                        singletonVariant={singletonVariant}
                       />
                     }
                   />

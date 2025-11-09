@@ -2,24 +2,37 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Plus, Minus } from "lucide-react";
+
+type SingletonVariant = "minimal" | "persistent" | "generic";
 
 interface SingletonConfigProps {
   className: string;
-  lazyInit: boolean;
-  threadSafe: boolean;
+  variant: SingletonVariant;
+  persistence: boolean;
+  lazyInstantiation: boolean;
   onClassNameChange: (value: string) => void;
-  onLazyInitChange: (value: boolean) => void;
-  onThreadSafeChange: (value: boolean) => void;
+  onVariantChange: (value: SingletonVariant) => void;
+  onPersistenceChange: (value: boolean) => void;
+  onLazyInstantiationChange: (value: boolean) => void;
 }
 
 export function SingletonConfig({
   className,
-  lazyInit,
-  threadSafe,
+  variant,
+  persistence,
+  lazyInstantiation,
   onClassNameChange,
-  onLazyInitChange,
-  onThreadSafeChange,
+  onVariantChange,
+  onPersistenceChange,
+  onLazyInstantiationChange,
 }: SingletonConfigProps) {
   return (
     <>
@@ -29,33 +42,110 @@ export function SingletonConfig({
           id="class-name"
           value={className}
           onChange={(e) => onClassNameChange(e.target.value)}
-          placeholder="ej. GameManager, Character, Enemy"
+          placeholder="ej. GameManager, AudioManager, PlayerController"
         />
       </div>
 
-      <div className="pt-2">
-        <h3 className="font-medium mb-2">Opciones de Singleton</h3>
-        <div className="space-y-2">
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="lazy-init"
-              checked={lazyInit}
-              onCheckedChange={(checked) => onLazyInitChange(checked === true)}
-            />
-            <Label htmlFor="lazy-init">Inicialización Perezosa</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="thread-safe"
-              checked={threadSafe}
-              onCheckedChange={(checked) =>
-                onThreadSafeChange(checked === true)
-              }
-            />
-            <Label htmlFor="thread-safe">Seguro para Hilos</Label>
+      <div className="space-y-2">
+        <Label htmlFor="singleton-variant">Variante de Singleton</Label>
+        <Select value={variant} onValueChange={onVariantChange}>
+          <SelectTrigger id="singleton-variant">
+            <SelectValue placeholder="Seleccionar variante" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="minimal">
+              <div className="flex flex-col items-start">
+                <span className="font-medium">Código Mínimo</span>
+                <span className="text-xs text-muted-foreground">
+                  Patrón esencial y básico
+                </span>
+              </div>
+            </SelectItem>
+            <SelectItem value="persistent">
+              <div className="flex flex-col items-start">
+                <span className="font-medium">Persistente y Lazy</span>
+                <span className="text-xs text-muted-foreground">
+                  Con persistencia y creación perezosa
+                </span>
+              </div>
+            </SelectItem>
+            <SelectItem value="generic">
+              <div className="flex flex-col items-start">
+                <span className="font-medium">Genérico Reutilizable</span>
+                <span className="text-xs text-muted-foreground">
+                  Clase base genérica (2 archivos)
+                </span>
+              </div>
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {variant === "persistent" && (
+        <div className="pt-2">
+          <h3 className="font-medium mb-2">
+            Opciones de Singleton Persistente
+          </h3>
+          <div className="space-y-2">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="persistence"
+                checked={persistence}
+                onCheckedChange={(checked) =>
+                  onPersistenceChange(checked === true)
+                }
+              />
+              <Label htmlFor="persistence" className="text-sm">
+                <span className="font-medium">DontDestroyOnLoad</span>
+                <p className="text-xs text-muted-foreground">
+                  Mantener el objeto entre escenas
+                </p>
+              </Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="lazy-instantiation"
+                checked={lazyInstantiation}
+                onCheckedChange={(checked) =>
+                  onLazyInstantiationChange(checked === true)
+                }
+              />
+              <Label htmlFor="lazy-instantiation" className="text-sm">
+                <span className="font-medium">Lazy Instantiation</span>
+                <p className="text-xs text-muted-foreground">
+                  Crear instancia automáticamente si no existe
+                </p>
+              </Label>
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {variant === "minimal" && (
+        <div className="pt-2">
+          <div className="rounded-md bg-muted p-3 text-sm text-muted-foreground">
+            <p className="font-medium mb-1">Código Mínimo</p>
+            <p className="text-xs">
+              Esta variante genera el código más esencial y básico del patrón
+              Singleton. Ideal para casos simples donde no se necesita
+              persistencia entre escenas.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {variant === "generic" && (
+        <div className="pt-2">
+          <div className="rounded-md bg-muted p-3 text-sm text-muted-foreground">
+            <p className="font-medium mb-1">Singleton Genérico</p>
+            <p className="text-xs">
+              Esta variante genera una clase base genérica reutilizable
+              (Singleton{`<T>`}) y una implementación concreta ({className}).
+              Útil para crear múltiples singletons en tu proyecto.
+            </p>
+          </div>
+        </div>
+      )}
     </>
   );
 }
