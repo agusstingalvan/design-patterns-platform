@@ -192,5 +192,162 @@ public class ${className}${state.name}State : I${className}State
     ] = `${className}${state.name}State.cs`;
   });
 
+  // Generate README.md
+  const readmeContent = generateStateReadme(options);
+  files.readme = readmeContent;
+  names.readme = "README.md";
+
   return { files, names };
+}
+
+function generateStateReadme(options: StateOptions): string {
+  const { className, includeController, states, callbackMethods } = options;
+  const enabledStates = states.filter((s) => s.enabled);
+  const enabledCallbacks = callbackMethods.filter((cb) => cb.enabled);
+
+  const filesList = `- I${className}State.cs (Interface de estados)
+- ${className}StateMachine.cs (Máquina de estados)
+${includeController ? `- ${className}.cs (Controlador/Context)` : ""}
+${enabledStates
+  .map((s) => `- ${className}${s.name}State.cs (Estado ${s.name})`)
+  .join("\n")}`;
+
+  const callbacksList =
+    enabledCallbacks.length > 0
+      ? `
+## Métodos de Callback Incluidos
+
+${enabledCallbacks
+  .map((cb) => {
+    const params =
+      cb.paramType && cb.paramName ? `${cb.paramType} ${cb.paramName}` : "";
+    return `- \`${cb.name}(${params})\``;
+  })
+  .join("\n")}
+`
+      : "";
+
+  const statesList = enabledStates
+    .map((s) => `- **${s.name}State**`)
+    .join("\n");
+
+  return `# ${className} - State Machine Pattern
+
+Patrón de diseño State Machine generado para Unity.
+
+## Descripción
+
+Este código implementa el patrón State Machine en Unity, permitiendo que un objeto cambie su comportamiento cuando cambia su estado interno.
+
+La máquina de estados gestiona las transiciones entre estados y garantiza que solo un estado esté activo a la vez.
+
+## Arquitectura
+
+Este patrón utiliza:
+- **Interface I${className}State**: Define el contrato que todos los estados deben seguir
+- **Clase ${className}StateMachine**: Gestiona el estado actual y las transiciones
+${
+  includeController
+    ? `- **Clase ${className}**: Controlador/Context que contiene la máquina de estados`
+    : ""
+}
+- **Estados concretos**: Implementaciones específicas de cada estado
+
+## Archivos Generados
+
+${filesList}
+${callbacksList}
+## Estados Incluidos
+
+${statesList}
+
+## Uso
+
+### Inicialización
+
+\`\`\`csharp
+${
+  includeController
+    ? `// En Awake() de ${className}.cs
+stateMachine = new ${className}StateMachine(this);
+stateMachine.Initialize(stateMachine.${
+        enabledStates[0]?.name.toLowerCase() || "idle"
+      }State);`
+    : `// Crear e inicializar la máquina de estados
+${className}StateMachine stateMachine = new ${className}StateMachine(this);
+stateMachine.Initialize(stateMachine.${
+        enabledStates[0]?.name.toLowerCase() || "idle"
+      }State);`
+}
+\`\`\`
+
+### Transiciones entre Estados
+
+\`\`\`csharp
+// Desde cualquier estado, hacer transición a otro
+${includeController ? `stateMachine` : `player.stateMachine`}.TransitionTo(${
+    includeController ? `stateMachine` : `player.stateMachine`
+  }.${enabledStates[1]?.name.toLowerCase() || "move"}State);
+\`\`\`
+
+### Actualizar el Estado Actual
+
+\`\`\`csharp
+// En Update()
+stateMachine.Update();
+\`\`\`
+
+## Implementación de Estados
+
+Cada estado implementa tres métodos:
+
+- **Enter()**: Se ejecuta cuando se entra al estado
+- **Update()**: Se ejecuta cada frame mientras el estado está activo
+- **Exit()**: Se ejecuta cuando se sale del estado
+
+### Ejemplo de Estado con Transición
+
+\`\`\`csharp
+public void Update()
+{
+    // Lógica del estado
+    if (someCondition)
+    {
+        // Transición a otro estado
+        player.stateMachine.TransitionTo(player.stateMachine.otherState);
+    }
+}
+\`\`\`
+
+## Casos de Uso Comunes
+
+- Controladores de Personajes (Idle, Walk, Run, Jump)
+- Comportamiento de IA de Enemigos (Patrol, Chase, Attack)
+- Gestión del Flujo del Juego (Menu, Playing, Paused, GameOver)
+- Gestión de Estados de UI (Closed, Opening, Open, Closing)
+
+## Flujo de Transición
+
+1. Se llama a \`TransitionTo(nextState)\`
+2. Se ejecuta \`CurrentState.Exit()\`
+3. Se actualiza \`CurrentState = nextState\`
+4. Se ejecuta \`nextState.Enter()\`
+5. En cada frame se ejecuta \`CurrentState.Update()\`
+
+## Notas Importantes
+
+✅ **Cada estado es una clase separada** para mejor organización y mantenibilidad
+
+✅ **Las transiciones son explícitas** - debes llamar a TransitionTo() manualmente
+
+✅ **Los estados tienen referencia al ${
+    includeController ? "controlador" : "player"
+  }** para acceder a datos y métodos
+
+⚠️ **Solo un estado puede estar activo a la vez**
+
+---
+
+*Generado con Design Patterns Platform - Unity Pattern Generator*
+`;
 }

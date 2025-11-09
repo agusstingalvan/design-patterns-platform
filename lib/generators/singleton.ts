@@ -215,5 +215,141 @@ public class ${className} : Singleton<${className}>
     names.implementation = `${className}.cs`;
   }
 
+  // Generate README.md
+  const readmeContent = generateSingletonReadme(options);
+  files.readme = readmeContent;
+  names.readme = "README.md";
+
   return { files, names };
+}
+
+function generateSingletonReadme(options: SingletonOptions): string {
+  const {
+    className,
+    variant,
+    persistence,
+    lazyInstantiation,
+    callbackMethods,
+  } = options;
+  const enabledCallbacks = callbackMethods.filter((cb) => cb.enabled);
+
+  const variantDescription =
+    variant === "minimal"
+      ? "Código Mínimo - Patrón esencial y básico"
+      : variant === "persistent"
+      ? "Persistente y Lazy - Con persistencia y creación perezosa"
+      : "Genérico Reutilizable - Clase base genérica";
+
+  const filesList =
+    variant === "generic"
+      ? `- Singleton.cs (Base genérica)
+- ${className}.cs (Implementación concreta)`
+      : `- ${className}.cs`;
+
+  const callbacksList =
+    enabledCallbacks.length > 0
+      ? `
+## Métodos de Callback Incluidos
+
+${enabledCallbacks
+  .map((cb) => {
+    const params =
+      cb.paramType && cb.paramName ? `${cb.paramType} ${cb.paramName}` : "";
+    return `- \`${cb.name}(${params})\``;
+  })
+  .join("\n")}
+`
+      : "";
+
+  const usageExample =
+    variant === "generic"
+      ? `// Acceder a la instancia desde cualquier lugar
+${className}.Instance.YourMethod();
+
+// El Singleton<T> se encarga de la gestión automática
+// Solo hereda de Singleton<${className}> en lugar de MonoBehaviour`
+      : `// Acceder a la instancia desde cualquier lugar
+${className}.Instance.YourMethod();
+
+// Asegúrate de tener un GameObject con el script ${className} en la escena`;
+
+  return `# ${className} - Singleton Pattern
+
+Patrón de diseño Singleton generado para Unity.
+
+## Descripción
+
+Este código implementa el patrón Singleton en Unity usando la variante: **${variantDescription}**.
+
+El patrón Singleton asegura que una clase tenga solo una instancia y proporciona un punto de acceso global a ella.
+
+## Variante Seleccionada
+
+**${
+    variant === "minimal"
+      ? "Código Mínimo"
+      : variant === "persistent"
+      ? "Persistente y Lazy"
+      : "Genérico Reutilizable"
+  }**
+
+${
+  variant === "persistent"
+    ? `
+### Opciones Configuradas:
+- **DontDestroyOnLoad**: ${persistence ? "✅ Habilitado" : "❌ Deshabilitado"}
+- **Lazy Instantiation**: ${
+        lazyInstantiation ? "✅ Habilitado" : "❌ Deshabilitado"
+      }
+`
+    : ""
+}
+
+## Archivos Generados
+
+${filesList}
+${callbacksList}
+## Uso
+
+${usageExample}
+
+## Casos de Uso Comunes
+
+- Game Managers
+- Audio Managers
+- Save/Load Systems
+- Input Managers
+- Scene Managers
+
+## Implementación
+
+1. ${
+    variant === "generic" ? "Ambos archivos" : "El archivo"
+  } debe estar en tu proyecto de Unity (dentro de la carpeta Assets/Scripts)
+2. ${
+    variant === "generic"
+      ? `Hereda de Singleton<${className}> en lugar de MonoBehaviour`
+      : `Asegúrate de tener un GameObject con el componente ${className} en tu escena`
+  }
+3. Accede a la instancia usando \`${className}.Instance\`
+4. Agrega tu lógica personalizada en los métodos y campos de ${className}
+
+## Notas Importantes
+
+⚠️ **Solo debe existir una instancia de ${className} en la escena${
+    persistence ? " (persiste entre escenas)" : ""
+  }**
+
+${
+  variant === "persistent" && lazyInstantiation
+    ? "✅ La instancia se creará automáticamente si no existe\n"
+    : variant === "persistent" && !lazyInstantiation
+    ? "⚠️ Debes tener un GameObject con ${className} en la escena inicial\n"
+    : ""
+}
+
+---
+
+*Generado con Design Patterns Platform - Unity Pattern Generator*
+`;
 }

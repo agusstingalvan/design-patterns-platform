@@ -10,6 +10,7 @@ import {
   Code2,
   Download,
   Archive,
+  FileText,
 } from "lucide-react";
 import JSZip from "jszip";
 import FileSaver from "file-saver";
@@ -33,11 +34,27 @@ export function CodeViewer({
     Object.keys(generatedFiles)[0] || "main"
   );
   const [copied, setCopied] = useState(false);
+  const [copiedReadme, setCopiedReadme] = useState(false);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(generatedFiles[activeFile] || "");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleCopyReadme = () => {
+    const readmeContent = generatedFiles["readme"] || "";
+    navigator.clipboard.writeText(readmeContent);
+    setCopiedReadme(true);
+    setTimeout(() => setCopiedReadme(false), 2000);
+  };
+
+  const handleDownloadReadme = () => {
+    const readmeContent = generatedFiles["readme"] || "";
+    const blob = new Blob([readmeContent], {
+      type: "text/markdown;charset=utf-8",
+    });
+    FileSaver.saveAs(blob, "README.md");
   };
 
   const handleDownloadFile = () => {
@@ -81,6 +98,34 @@ export function CodeViewer({
           </TabsTrigger>
         </TabsList>
         <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleCopyReadme}
+            title="Copiar README.md"
+          >
+            {copiedReadme ? (
+              <>
+                <Check className="mr-2 h-4 w-4" />
+                README Copiado
+              </>
+            ) : (
+              <>
+                <FileText className="mr-2 h-4 w-4" />
+                Copiar README
+              </>
+            )}
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleDownloadReadme}
+            title="Descargar README.md"
+          >
+            <Download className="mr-2 h-4 w-4" />
+            README
+          </Button>
+          <div className="border-l mx-1" />
           <Button variant="ghost" size="sm" onClick={handleCopy}>
             {copied ? (
               <>
