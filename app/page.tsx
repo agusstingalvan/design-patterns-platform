@@ -40,7 +40,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Link href="/patterns">
+                  <Link href="/generator">
                     <Button size="lg">
                       Explorar Patrones
                       <BookOpen className="ml-2 h-4 w-4" />
