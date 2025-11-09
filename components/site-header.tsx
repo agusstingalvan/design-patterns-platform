@@ -81,7 +81,9 @@ export function SiteHeader() {
               <span className="hidden font-bold sm:inline-block">
                 Patrones de programación de videojuegos
               </span>
-              <span className="text-sm text-foreground/60">TESIS</span>
+              <span className="text-sm text-foreground/60">
+                Trabajo Final de Carrera
+              </span>
             </div>
           </Link>
           <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
