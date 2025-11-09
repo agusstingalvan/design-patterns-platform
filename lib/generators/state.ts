@@ -1,5 +1,6 @@
 export interface StateOptions {
   className: string;
+  includeController: boolean;
   states: Array<{ name: string; enabled: boolean }>;
   callbackMethods: Array<{
     name: string;
@@ -21,7 +22,7 @@ export function generateStateCode(options: StateOptions): {
   files: GeneratedFiles;
   names: FileNames;
 } {
-  const { className, states, callbackMethods } = options;
+  const { className, includeController, states, callbackMethods } = options;
   const files: GeneratedFiles = {};
   const names: FileNames = {};
 
@@ -103,21 +104,22 @@ ${stateInitializations}
   files.stateMachine = stateMachineCode;
   names.stateMachine = `${className}StateMachine.cs`;
 
-  // C. Player/Controller class
-  const callbackImplementations = enabledCallbacks
-    .map((callback) => {
-      const params =
-        callback.paramType && callback.paramName
-          ? `${callback.paramType} ${callback.paramName}`
-          : "";
-      return `    private void ${callback.name}(${params})
+  // C. Player/Controller class (optional)
+  if (includeController) {
+    const callbackImplementations = enabledCallbacks
+      .map((callback) => {
+        const params =
+          callback.paramType && callback.paramName
+            ? `${callback.paramType} ${callback.paramName}`
+            : "";
+        return `    private void ${callback.name}(${params})
     {
         // Forward to current state if needed
     }`;
-    })
-    .join("\n\n");
+      })
+      .join("\n\n");
 
-  const controllerCode = `using UnityEngine;
+    const controllerCode = `using UnityEngine;
 
 // Context class
 public class ${className} : MonoBehaviour
@@ -143,8 +145,9 @@ public class ${className} : MonoBehaviour
         stateMachine.Update();
     }${enabledCallbacks.length > 0 ? "\n\n" + callbackImplementations : ""}
 }`;
-  files.controller = controllerCode;
-  names.controller = `${className}.cs`;
+    files.controller = controllerCode;
+    names.controller = `${className}.cs`;
+  }
 
   // D. Generate state files for each enabled state
   enabledStates.forEach((state) => {

@@ -58,6 +58,7 @@ export default function GeneratorPage() {
   ]);
 
   // State pattern options
+  const [includeController, setIncludeController] = useState(true);
   const [states, setStates] = useState([
     { name: "Idle", enabled: true },
     { name: "Move", enabled: true },
@@ -94,6 +95,7 @@ export default function GeneratorPage() {
     persistence,
     lazyInstantiation,
     singletonCallbackMethods,
+    includeController,
     stateCallbackMethods,
     states,
   ]);
@@ -112,6 +114,7 @@ export default function GeneratorPage() {
     } else if (pattern === "state") {
       const { files, names } = generateStateCode({
         className,
+        includeController,
         states,
         callbackMethods: stateCallbackMethods,
       });
@@ -184,9 +187,11 @@ export default function GeneratorPage() {
                     {pattern === "state" && (
                       <StateConfig
                         className={className}
+                        includeController={includeController}
                         states={states}
                         callbackMethods={stateCallbackMethods}
                         onClassNameChange={setClassName}
+                        onIncludeControllerChange={setIncludeController}
                         onStatesChange={setStates}
                         onCallbackMethodsChange={setStateCallbackMethods}
                       />

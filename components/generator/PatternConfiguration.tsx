@@ -167,18 +167,22 @@ interface State {
 
 interface StateConfigProps {
   className: string;
+  includeController: boolean;
   states: State[];
   callbackMethods: CallbackMethod[];
   onClassNameChange: (value: string) => void;
+  onIncludeControllerChange: (value: boolean) => void;
   onStatesChange: (states: State[]) => void;
   onCallbackMethodsChange: (methods: CallbackMethod[]) => void;
 }
 
 export function StateConfig({
   className,
+  includeController,
   states,
   callbackMethods,
   onClassNameChange,
+  onIncludeControllerChange,
   onStatesChange,
   onCallbackMethodsChange,
 }: StateConfigProps) {
@@ -220,35 +224,26 @@ export function StateConfig({
       </div>
 
       <div className="pt-2">
-        {/* <h3 className="font-medium mb-2">
+        <h3 className="font-medium mb-2">
           Opciones de Máquina de Estados
         </h3>
         <div className="space-y-2">
           <div className="flex items-center space-x-2">
             <Checkbox
-              id="hierarchical"
-              checked={hierarchicalStates}
+              id="include-controller"
+              checked={includeController}
               onCheckedChange={(checked) =>
-                setHierarchicalStates(checked === true)
+                onIncludeControllerChange(checked === true)
               }
             />
-            <Label htmlFor="hierarchical">
-              Estados Jerárquicos
+            <Label htmlFor="include-controller" className="text-sm">
+              <span className="font-medium">Incluir Clase Controladora</span>
+              <p className="text-xs text-muted-foreground">
+                Generar archivo {className}.cs (Context class)
+              </p>
             </Label>
           </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="event-driven"
-              checked={eventDriven}
-              onCheckedChange={(checked) =>
-                setEventDriven(checked === true)
-              }
-            />
-            <Label htmlFor="event-driven">
-              Transiciones por Eventos
-            </Label>
-          </div>
-        </div> */}
+        </div>
 
         <h3 className="font-medium mt-4 mb-2">Estados</h3>
         <div className="space-y-3">
