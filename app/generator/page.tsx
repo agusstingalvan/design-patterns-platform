@@ -581,7 +581,7 @@ public class Concrete${className}Factory : ${className}Factory
         
         if (prefab == null)
         {
-            Debug.LogError($"No prefab found for product type: {productType}");
+            Debug.LogError($"No prefab found for product type: ${"`"}{productType}${"`"}");
             return null;
         }
         
@@ -816,10 +816,10 @@ public class CommandInvoker : MonoBehaviour
           <div className="flex flex-col gap-4">
             {/* <div className="flex flex-col gap-2">
               <h1 className="text-3xl font-bold tracking-tight">
-                Code Generator
+                Generador de Código
               </h1>
               <p className="text-muted-foreground">
-                Generate customized design pattern code for your game engine
+                Genera código de patrones de diseño personalizado para tu motor de juego
               </p>
             </div> */}
             <div className="grid gap-6 md:grid-cols-2">
@@ -827,10 +827,10 @@ public class CommandInvoker : MonoBehaviour
                 <CardContent className="p-6">
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="pattern">Select Pattern</Label>
+                      <Label htmlFor="pattern">Seleccionar Patrón</Label>
                       <Select value={pattern} onValueChange={setPattern}>
                         <SelectTrigger id="pattern">
-                          <SelectValue placeholder="Select pattern" />
+                          <SelectValue placeholder="Seleccionar patrón" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="singleton">
@@ -867,10 +867,10 @@ public class CommandInvoker : MonoBehaviour
                       </Select>
                     </div>
                     {/* <div className="space-y-2">
-                      <Label htmlFor="engine">Game Engine</Label>
+                      <Label htmlFor="engine">Motor de Juego</Label>
                       <Select value={engine} onValueChange={setEngine}>
                         <SelectTrigger id="engine">
-                          <SelectValue placeholder="Select engine" />
+                          <SelectValue placeholder="Seleccionar motor" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="unity">Unity (C#)</SelectItem>
@@ -878,18 +878,20 @@ public class CommandInvoker : MonoBehaviour
                       </Select>
                     </div> */}
                     <div className="space-y-2">
-                      <Label htmlFor="class-name">Main Class Name</Label>
+                      <Label htmlFor="class-name">
+                        Nombre de Clase Principal
+                      </Label>
                       <Input
                         id="class-name"
                         value={className}
                         onChange={(e) => setClassName(e.target.value)}
-                        placeholder="e.g. GameManager, Character, Enemy"
+                        placeholder="ej. GameManager, Character, Enemy"
                       />
                     </div>
 
                     {/* {pattern === "singleton" && (
                       <div className="pt-2">
-                        <h3 className="font-medium mb-2">Singleton Options</h3>
+                        <h3 className="font-medium mb-2">Opciones de Singleton</h3>
                         <div className="space-y-2">
                           <div className="flex items-center space-x-2">
                             <Checkbox
@@ -900,7 +902,7 @@ public class CommandInvoker : MonoBehaviour
                               }
                             />
                             <Label htmlFor="lazy-init">
-                              Lazy Initialization
+                              Inicialización Perezosa
                             </Label>
                           </div>
                           <div className="flex items-center space-x-2">
@@ -911,7 +913,7 @@ public class CommandInvoker : MonoBehaviour
                                 setThreadSafe(checked === true)
                               }
                             />
-                            <Label htmlFor="thread-safe">Thread Safe</Label>
+                            <Label htmlFor="thread-safe">Seguro para Hilos</Label>
                           </div>
                         </div>
                       </div>
@@ -920,7 +922,7 @@ public class CommandInvoker : MonoBehaviour
                     {pattern === "state" && (
                       <div className="pt-2">
                         {/* <h3 className="font-medium mb-2">
-                          State Machine Options
+                          Opciones de Máquina de Estados
                         </h3>
                         <div className="space-y-2">
                           <div className="flex items-center space-x-2">
@@ -932,7 +934,7 @@ public class CommandInvoker : MonoBehaviour
                               }
                             />
                             <Label htmlFor="hierarchical">
-                              Hierarchical States
+                              Estados Jerárquicos
                             </Label>
                           </div>
                           <div className="flex items-center space-x-2">
@@ -944,12 +946,12 @@ public class CommandInvoker : MonoBehaviour
                               }
                             />
                             <Label htmlFor="event-driven">
-                              Event-Driven Transitions
+                              Transiciones por Eventos
                             </Label>
                           </div>
                         </div> */}
 
-                        <h3 className="font-medium mt-4 mb-2">States</h3>
+                        <h3 className="font-medium mt-4 mb-2">Estados</h3>
                         <div className="space-y-3">
                           {states.map((state, index) => (
                             <div
@@ -968,7 +970,7 @@ public class CommandInvoker : MonoBehaviour
                                 onChange={(e) =>
                                   updateStateName(index, e.target.value)
                                 }
-                                placeholder="State name"
+                                placeholder="Nombre del estado"
                                 className="flex-1"
                               />
                               {index > 0 && (
@@ -989,12 +991,12 @@ public class CommandInvoker : MonoBehaviour
                             className="mt-2"
                           >
                             <Plus className="mr-2 h-4 w-4" />
-                            Add State
+                            Agregar Estado
                           </Button>
                         </div>
 
                         <h3 className="font-medium mt-4 mb-2">
-                          Callback Methods
+                          Métodos de Callback
                         </h3>
                         <div className="space-y-3">
                           {callbackMethods.map((callback, index) => (
@@ -1019,7 +1021,7 @@ public class CommandInvoker : MonoBehaviour
                                       e.target.value
                                     )
                                   }
-                                  placeholder="Method name"
+                                  placeholder="Nombre del método"
                                   className="flex-1"
                                 />
                                 {index > 0 && (
@@ -1042,7 +1044,7 @@ public class CommandInvoker : MonoBehaviour
                                       e.target.value
                                     )
                                   }
-                                  placeholder="Parameter type"
+                                  placeholder="Tipo de parámetro"
                                 />
                                 <Input
                                   value={callback.paramName}
@@ -1053,7 +1055,7 @@ public class CommandInvoker : MonoBehaviour
                                       e.target.value
                                     )
                                   }
-                                  placeholder="Parameter name"
+                                  placeholder="Nombre del parámetro"
                                 />
                               </div>
                             </div>
@@ -1065,7 +1067,7 @@ public class CommandInvoker : MonoBehaviour
                             className="mt-2"
                           >
                             <Plus className="mr-2 h-4 w-4" />
-                            Add Callback Method
+                            Agregar Método Callback
                           </Button>
                         </div>
                       </div>
@@ -1074,7 +1076,7 @@ public class CommandInvoker : MonoBehaviour
                     {pattern === "factory" && (
                       <div className="pt-2">
                         <h3 className="font-medium mb-2">
-                          Factory Method Options
+                          Opciones del Factory Method
                         </h3>
                         <div className="space-y-2">
                           <div className="flex items-center space-x-2">
@@ -1086,7 +1088,7 @@ public class CommandInvoker : MonoBehaviour
                               }
                             />
                             <Label htmlFor="abstract-factory">
-                              Abstract Factory (Multiple Product Types)
+                              Abstract Factory (Múltiples Tipos de Productos)
                             </Label>
                           </div>
                         </div>
@@ -1095,7 +1097,7 @@ public class CommandInvoker : MonoBehaviour
 
                     {/* <Button className="w-full" onClick={generateCode}>
                       <RefreshCw className="mr-2 h-4 w-4" />
-                      Generate Code
+                      Generar Código
                     </Button> */}
                   </div>
                 </CardContent>
@@ -1107,14 +1109,14 @@ public class CommandInvoker : MonoBehaviour
                       <TabsList className="h-12">
                         <TabsTrigger value="code" className="flex items-center">
                           <Code2 className="mr-2 h-4 w-4" />
-                          Code
+                          Código
                         </TabsTrigger>
                         <TabsTrigger
                           value="usage"
                           className="flex items-center"
                         >
                           <Gamepad2 className="mr-2 h-4 w-4" />
-                          Usage
+                          Uso
                         </TabsTrigger>
                       </TabsList>
                       <div className="flex gap-2">
@@ -1122,12 +1124,12 @@ public class CommandInvoker : MonoBehaviour
                           {copied ? (
                             <>
                               <Check className="mr-2 h-4 w-4" />
-                              Copied!
+                              ¡Copiado!
                             </>
                           ) : (
                             <>
                               <ClipboardCopy className="mr-2 h-4 w-4" />
-                              Copy
+                              Copiar
                             </>
                           )}
                         </Button>
@@ -1137,7 +1139,7 @@ public class CommandInvoker : MonoBehaviour
                           onClick={handleDownloadFile}
                         >
                           <Download className="mr-2 h-4 w-4" />
-                          Download
+                          Descargar
                         </Button>
                         <Button
                           variant="ghost"
@@ -1145,7 +1147,7 @@ public class CommandInvoker : MonoBehaviour
                           onClick={handleDownloadAll}
                         >
                           <Archive className="mr-2 h-4 w-4" />
-                          Download All
+                          Descargar Todo
                         </Button>
                       </div>
                     </div>
@@ -1176,35 +1178,35 @@ public class CommandInvoker : MonoBehaviour
                       </div>
                     </TabsContent>
                     <TabsContent value="usage" className="p-4 space-y-4">
-                      <h3 className="font-medium">How to use this pattern</h3>
+                      <h3 className="font-medium">Cómo usar este patrón</h3>
                       {pattern === "singleton" && (
                         <>
                           <p className="text-sm text-muted-foreground">
-                            The Singleton pattern ensures a class has only one
-                            instance and provides a global point of access to
-                            it.
+                            El patrón Singleton asegura que una clase tenga solo
+                            una instancia y proporciona un punto de acceso
+                            global a ella.
                           </p>
                           <div className="space-y-2">
                             <h4 className="font-medium text-sm">
-                              Implementation Steps:
+                              Pasos de Implementación:
                             </h4>
                             <ol className="list-decimal list-inside text-sm text-muted-foreground space-y-1">
                               <li>
-                                Create a new script with the generated code
+                                Crea un nuevo script con el código generado
                               </li>
                               <li>
-                                Attach the script to a GameObject in your scene
+                                Adjunta el script a un GameObject en tu escena
                                 (Unity)
                               </li>
                               <li>
-                                Access the singleton instance using{" "}
+                                Accede a la instancia singleton usando{" "}
                                 <code className="text-xs bg-muted px-1 py-0.5 rounded">{`${className}.Instance`}</code>
                               </li>
                             </ol>
                           </div>
                           <div className="space-y-2">
                             <h4 className="font-medium text-sm">
-                              Example Usage:
+                              Ejemplo de Uso:
                             </h4>
                             <pre className="text-xs bg-muted p-2 rounded overflow-x-auto">
                               {engine === "unity"
@@ -1220,34 +1222,35 @@ void Start() {
                       {pattern === "state" && (
                         <>
                           <p className="text-sm text-muted-foreground">
-                            The State pattern allows an object to alter its
-                            behavior when its internal state changes. The object
-                            will appear to change its class.
+                            El patrón State permite que un objeto altere su
+                            comportamiento cuando su estado interno cambia. El
+                            objeto parecerá cambiar su clase.
                           </p>
                           <div className="space-y-2">
                             <h4 className="font-medium text-sm">
-                              Implementation Steps:
+                              Pasos de Implementación:
                             </h4>
                             <ol className="list-decimal list-inside text-sm text-muted-foreground space-y-1">
                               <li>
-                                Create all the generated files in your project
+                                Crea todos los archivos generados en tu proyecto
                               </li>
                               <li>
-                                Attach the {`${className}Controller`} script to
-                                your game object
+                                Adjunta el script {`${className}Controller`} a
+                                tu objeto de juego
                               </li>
                               <li>
-                                Implement the specific behavior for each state
+                                Implementa el comportamiento específico para
+                                cada estado
                               </li>
                               <li>
-                                Set up transitions between states based on your
-                                game conditions
+                                Configura las transiciones entre estados según
+                                las condiciones de tu juego
                               </li>
                             </ol>
                           </div>
                           <div className="space-y-2">
                             <h4 className="font-medium text-sm">
-                              Example Usage:
+                              Ejemplo de Uso:
                             </h4>
                             <pre className="text-xs bg-muted p-2 rounded overflow-x-auto">
                               {engine === "unity"
@@ -1267,35 +1270,35 @@ void Update() {
                       {pattern === "factory" && (
                         <>
                           <p className="text-sm text-muted-foreground">
-                            The Factory Method pattern defines an interface for
-                            creating objects, but lets subclasses decide which
-                            classes to instantiate.
+                            El patrón Factory Method define una interfaz para
+                            crear objetos, pero permite que las subclases
+                            decidan qué clases instanciar.
                           </p>
                           <div className="space-y-2">
                             <h4 className="font-medium text-sm">
-                              Implementation Steps:
+                              Pasos de Implementación:
                             </h4>
                             <ol className="list-decimal list-inside text-sm text-muted-foreground space-y-1">
                               <li>
-                                Create all the generated files in your project
+                                Crea todos los archivos generados en tu proyecto
                               </li>
                               <li>
-                                Create concrete product classes that implement
-                                the product interface
+                                Crea clases de productos concretos que
+                                implementen la interfaz del producto
                               </li>
                               <li>
-                                Create concrete factory classes that extend the
-                                abstract factory
+                                Crea clases de fábrica concretas que extiendan
+                                la fábrica abstracta
                               </li>
                               <li>
-                                Use the factory to create products without
-                                specifying their concrete classes
+                                Usa la fábrica para crear productos sin
+                                especificar sus clases concretas
                               </li>
                             </ol>
                           </div>
                           <div className="space-y-2">
                             <h4 className="font-medium text-sm">
-                              Example Usage:
+                              Ejemplo de Uso:
                             </h4>
                             <pre className="text-xs bg-muted p-2 rounded overflow-x-auto">
                               {engine === "unity"
@@ -1315,36 +1318,36 @@ void Start() {
                       {pattern === "observer" && (
                         <>
                           <p className="text-sm text-muted-foreground">
-                            The Observer pattern defines a one-to-many
-                            dependency between objects so that when one object
-                            changes state, all its dependents are notified and
-                            updated automatically.
+                            El patrón Observer define una dependencia de uno a
+                            muchos entre objetos para que cuando un objeto
+                            cambie de estado, todos sus dependientes sean
+                            notificados y actualizados automáticamente.
                           </p>
                           <div className="space-y-2">
                             <h4 className="font-medium text-sm">
-                              Implementation Steps:
+                              Pasos de Implementación:
                             </h4>
                             <ol className="list-decimal list-inside text-sm text-muted-foreground space-y-1">
                               <li>
-                                Create a new script with the generated code
+                                Crea un nuevo script con el código generado
                               </li>
                               <li>
-                                Attach the subject script to a GameObject in
-                                your scene (Unity)
+                                Adjunta el script del sujeto a un GameObject en
+                                tu escena (Unity)
                               </li>
                               <li>
-                                Attach the observer script to another GameObject
-                                in your scene (Unity)
+                                Adjunta el script del observador a otro
+                                GameObject en tu escena (Unity)
                               </li>
                               <li>
-                                Use the subject's Attach method to register the
-                                observer
+                                Usa el método Attach del sujeto para registrar
+                                el observador
                               </li>
                             </ol>
                           </div>
                           <div className="space-y-2">
                             <h4 className="font-medium text-sm">
-                              Example Usage:
+                              Ejemplo de Uso:
                             </h4>
                             <pre className="text-xs bg-muted p-2 rounded overflow-x-auto">
                               {engine === "unity"
@@ -1362,34 +1365,35 @@ void Start() {
                       {pattern === "command" && (
                         <>
                           <p className="text-sm text-muted-foreground">
-                            The Command pattern encapsulates a request as an
-                            object, thereby allowing for parameterization of
-                            clients with queues, requests, and operations.
+                            El patrón Command encapsula una solicitud como un
+                            objeto, permitiendo parametrizar clientes con colas,
+                            solicitudes y operaciones.
                           </p>
                           <div className="space-y-2">
                             <h4 className="font-medium text-sm">
-                              Implementation Steps:
+                              Pasos de Implementación:
                             </h4>
                             <ol className="list-decimal list-inside text-sm text-muted-foreground space-y-1">
                               <li>
-                                Create a new script with the generated code
+                                Crea un nuevo script con el código generado
                               </li>
                               <li>
-                                Attach the invoker script to a GameObject in
-                                your scene (Unity)
+                                Adjunta el script del invocador a un GameObject
+                                en tu escena (Unity)
                               </li>
                               <li>
-                                Create concrete command classes that implement
-                                the command interface
+                                Crea clases de comandos concretos que
+                                implementen la interfaz de comando
                               </li>
                               <li>
-                                Use the invoker to execute and undo commands
+                                Usa el invocador para ejecutar y deshacer
+                                comandos
                               </li>
                             </ol>
                           </div>
                           <div className="space-y-2">
                             <h4 className="font-medium text-sm">
-                              Example Usage:
+                              Ejemplo de Uso:
                             </h4>
                             <pre className="text-xs bg-muted p-2 rounded overflow-x-auto">
                               {engine === "unity"
@@ -1413,62 +1417,62 @@ void Update() {
                       )}
                       <div className="space-y-2">
                         <h4 className="font-medium text-sm">
-                          Common Use Cases:
+                          Casos de Uso Comunes:
                         </h4>
                         {pattern === "singleton" && (
                           <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
-                            <li>Game Managers</li>
-                            <li>Audio Systems</li>
-                            <li>Input Managers</li>
-                            <li>Save/Load Systems</li>
+                            <li>Gestores de Juego</li>
+                            <li>Sistemas de Audio</li>
+                            <li>Gestores de Entrada</li>
+                            <li>Sistemas de Guardado/Carga</li>
                           </ul>
                         )}
                         {pattern === "state" && (
                           <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
-                            <li>Character Controllers</li>
-                            <li>Enemy AI Behavior</li>
-                            <li>Game Flow Management</li>
-                            <li>UI State Management</li>
+                            <li>Controladores de Personajes</li>
+                            <li>Comportamiento de IA de Enemigos</li>
+                            <li>Gestión del Flujo del Juego</li>
+                            <li>Gestión de Estados de UI</li>
                           </ul>
                         )}
                         {pattern === "factory" && (
                           <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
-                            <li>Enemy Spawning Systems</li>
-                            <li>Weapon/Item Creation</li>
-                            <li>Level Generation</li>
-                            <li>UI Element Creation</li>
+                            <li>Sistemas de Generación de Enemigos</li>
+                            <li>Creación de Armas/Ítems</li>
+                            <li>Generación de Niveles</li>
+                            <li>Creación de Elementos de UI</li>
                           </ul>
                         )}
                         {pattern === "observer" && (
                           <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
-                            <li>Event Systems</li>
-                            <li>Achievement Systems</li>
-                            <li>UI Update Systems</li>
-                            <li>Game State Notifications</li>
+                            <li>Sistemas de Eventos</li>
+                            <li>Sistemas de Logros</li>
+                            <li>Sistemas de Actualización de UI</li>
+                            <li>Notificaciones de Estado del Juego</li>
                           </ul>
                         )}
                         {pattern === "command" && (
                           <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
-                            <li>Undo/Redo Systems</li>
-                            <li>Input Handling</li>
-                            <li>AI Command Queues</li>
-                            <li>Macro Recording</li>
+                            <li>Sistemas de Deshacer/Rehacer</li>
+                            <li>Manejo de Entrada</li>
+                            <li>Colas de Comandos de IA</li>
+                            <li>Grabación de Macros</li>
                           </ul>
                         )}
                       </div>
 
                       <div className="pt-4 border-t mt-4">
                         <h3 className="font-medium mb-2">
-                          Diagram Integration
+                          Integración con Diagramas
                         </h3>
                         <p className="text-sm text-muted-foreground mb-3">
-                          Visualize this pattern with our diagram editor to
-                          better understand its structure and relationships.
+                          Visualiza este patrón con nuestro editor de diagramas
+                          para comprender mejor su estructura y relaciones.
                         </p>
                         <Link href={generateDiagramUrl()}>
                           <Button>
                             <GitFork className="mr-2 h-4 w-4" />
-                            Open in Diagram Editor
+                            Abrir en Editor de Diagramas
                           </Button>
                         </Link>
                       </div>
