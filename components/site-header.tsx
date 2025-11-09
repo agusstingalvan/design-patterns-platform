@@ -23,7 +23,7 @@ export function SiteHeader() {
             <GitFork className="h-6 w-6" />
             <div className="flex flex-col ">
               <span className="hidden font-bold sm:inline-block">
-                Game Design Patterns
+                Patrones de programación de videojuegos
               </span>
               <span className="text-sm text-foreground/60">TESIS</span>
             </div>
