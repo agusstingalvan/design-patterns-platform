@@ -13,6 +13,7 @@ import {
   FileText,
   Wand2,
   Save,
+  GitPullRequest,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -22,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SavePatternDialog } from "./SavePatternDialog";
+import { CreatePRDialog } from "./CreatePRDialog";
 import JSZip from "jszip";
 import FileSaver from "file-saver";
 
@@ -46,6 +48,7 @@ export function CodeViewer({
   const [copied, setCopied] = useState(false);
   const [copiedReadme, setCopiedReadme] = useState(false);
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
+  const [createPRDialogOpen, setCreatePRDialogOpen] = useState(false);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(generatedFiles[activeFile] || "");
@@ -104,6 +107,14 @@ export function CodeViewer({
         pattern={pattern}
         className={className}
       />
+      <CreatePRDialog
+        open={createPRDialogOpen}
+        onOpenChange={setCreatePRDialogOpen}
+        generatedFiles={generatedFiles}
+        fileNames={fileNames}
+        pattern={pattern}
+        className={className}
+      />
       <Tabs defaultValue="code">
         <div className="flex items-center justify-between border-b px-4 absolute top-0 right-0 left-0 z-10">
           <TabsList className="h-12">
@@ -127,6 +138,10 @@ export function CodeViewer({
               <DropdownMenuItem onClick={() => setSaveDialogOpen(true)}>
                 <Save className="mr-2 h-4 w-4" />
                 Guardar Patrón
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setCreatePRDialogOpen(true)}>
+                <GitPullRequest className="mr-2 h-4 w-4" />
+                Crear Pull Request
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleCopyReadme}>
