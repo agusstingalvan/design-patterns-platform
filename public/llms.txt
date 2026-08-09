@@ -1,0 +1,24 @@
+# Game Design Patterns
+
+> Plataforma web para generar codigo C# parametrizable de patrones de diseno para Unity.
+
+Desarrollado por [Agustin Galvan](https://agustingalvan.netlify.app/).
+
+Proyecto academico de la [Universidad Nacional de Rafaela (UNRaf)](https://www.unraf.edu.ar/), para la Licenciatura en Produccion de Videojuegos y Entretenimiento Digital.
+
+## Paginas principales
+
+- [Inicio](/): descripcion del producto, patrones soportados y flujo de trabajo.
+- [Generador](/generator): configuracion y generacion de codigo C# para Unity.
+
+## Capacidades
+
+- Generacion de implementaciones C# para Singleton, Object Pool y State Machine.
+- Parametros configurables y vista previa de codigo.
+- Exportacion de archivos individuales o ZIP.
+- Persistencia de configuraciones y colecciones de equipo.
+- Integracion con GitHub para crear Pull Requests.
+
+## Autor
+
+- [Agustin Galvan](https://agustingalvan.netlify.app/)

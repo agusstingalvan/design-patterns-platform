@@ -50,14 +50,20 @@ export default async function GeneratorPatternPage({
     .single();
 
   // Check if project is accessible (user's project or team's shared project)
-  const { data: projectAccess } = await supabase
+  let projectAccessQuery = supabase
     .from("projects")
     .select("id")
-    .eq("id", params.id)
-    .or(
-      `and(team_id.is.null,shared.eq.false),and(team_id.eq.${profile?.team_id},shared.eq.true)`
-    )
-    .single();
+    .eq("id", params.id);
+
+  if (profile?.team_id) {
+    projectAccessQuery = projectAccessQuery.or(
+      `user_id.eq.${user.id},and(team_id.eq.${profile.team_id},shared.eq.true)`
+    );
+  } else {
+    projectAccessQuery = projectAccessQuery.eq("user_id", user.id);
+  }
+
+  const { data: projectAccess } = await projectAccessQuery.single();
 
   if (!projectAccess) {
     redirect("/collections");

@@ -9,8 +9,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Code2, GitFork, LogOut, User, FolderOpen } from "lucide-react";
+import { Code2, LogOut, User, FolderOpen, Sparkles } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { signInWithGithub, signOut } from "@/app/auth/actions";
@@ -62,16 +63,23 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-8">
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#0b0e0c]/90 px-4 backdrop-blur-xl sm:px-6">
       <div className="container flex h-14 items-center">
         <div className="mr-4 flex">
-          <Link href="/generator" className="mr-6 flex items-center space-x-2">
-            <GitFork className="h-6 w-6" />
+          <Link href="/" className="mr-6 flex items-center space-x-2">
+            <Image
+              src="/logo.svg"
+              alt="Game Design Patterns"
+              width={40}
+              height={40}
+              className="h-10 w-10 invert"
+              priority
+            />
             <div className="flex flex-col ">
-              <span className="hidden font-bold sm:inline-block">
-                Patrones de programación de videojuegos
+              <span className="hidden font-semibold text-white sm:inline-block">
+                Game Design Patterns
               </span>
-              <span className="text-sm text-foreground/60">
+              <span className="text-xs text-white/40">
                 Trabajo Final de Carrera
               </span>
             </div>
@@ -79,14 +87,14 @@ export function SiteHeader() {
 
         </div>
         <div className="flex flex-1 items-center justify-end space-x-2">
-<nav className="flex items-center space-x-4">
+          <nav className="flex items-center space-x-2 sm:space-x-4">
             <Link
               href="/generator"
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
+              className="hidden text-white/50 transition-colors hover:text-white sm:block"
             >
               <div className="flex items-center gap-1">
                 <Code2 className="h-4 w-4" />
-                <span>Generador de Patrones</span>
+                <span>Generador</span>
               </div>
             </Link>
 
@@ -146,9 +154,10 @@ export function SiteHeader() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button onClick={handleSignIn} variant="default" size="sm">
+              <Button onClick={handleSignIn} size="sm" className="rounded-full bg-white text-black hover:bg-white/85">
                 <User className="mr-2 h-4 w-4" />
-                Iniciar sesión
+                <span className="hidden sm:inline">Continuar con GitHub</span>
+                <span className="sm:hidden">Entrar</span>
               </Button>
             )}
           </nav>

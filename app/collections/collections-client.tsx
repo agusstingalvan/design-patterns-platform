@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
 import { CreateTeamDialog } from "@/components/collections/CreateTeamDialog";
 import { InviteCollaboratorDialog } from "@/components/collections/InviteCollaboratorDialog";
 import { Users, Search, UserPlus, LogOut, FolderOpen } from "lucide-react";
@@ -91,9 +90,9 @@ export function CollectionsClient({
   };
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex h-screen flex-col overflow-hidden">
       <SiteHeader />
-      <main className="flex-1 py-8 flex justify-center">
+      <main className="flex flex-1 justify-center overflow-y-auto py-8">
         <div className="container max-w-7xl space-y-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
@@ -239,8 +238,6 @@ export function CollectionsClient({
           )}
         </div>
       </main>
-      <SiteFooter />
-
       <CreateTeamDialog
         open={createTeamOpen}
         onOpenChange={setCreateTeamOpen}

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
 import { CodeViewer } from "@/components/generator/CodeViewer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -39,7 +38,7 @@ export function GeneratorClient({ project }: GeneratorClientProps) {
 
   if (!pattern) {
     return (
-      <div className="flex min-h-screen flex-col">
+        <div className="flex min-h-screen flex-col">
         <SiteHeader />
         <main className="flex-1 container py-8">
           <div className="flex flex-col items-center justify-center py-12">
@@ -54,7 +53,6 @@ export function GeneratorClient({ project }: GeneratorClientProps) {
             </Button>
           </div>
         </main>
-        <SiteFooter />
       </div>
     );
   }
@@ -142,7 +140,6 @@ export function GeneratorClient({ project }: GeneratorClientProps) {
           </Card>
         </div>
       </main>
-      <SiteFooter />
     </div>
   );
 }

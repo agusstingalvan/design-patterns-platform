@@ -50,11 +50,11 @@ export function UsageInfo({
 
           {singletonVariant === "minimal" && (
             <div className="space-y-2 my-3">
-              <div className="rounded-md bg-blue-50 dark:bg-blue-950 p-3 text-sm">
-                <p className="font-medium text-blue-900 dark:text-blue-100 mb-1">
+              <div className="rounded-md bg-muted p-3 text-sm">
+                <p className="font-medium mb-1">
                   Variante: Código Mínimo
                 </p>
-                <p className="text-xs text-blue-800 dark:text-blue-200">
+                <p className="text-xs text-muted-foreground">
                   Esta es la implementación más simple del patrón Singleton.
                   Perfecta para casos básicos donde solo necesitas una única
                   instancia sin persistencia entre escenas.
@@ -65,11 +65,11 @@ export function UsageInfo({
 
           {singletonVariant === "persistent" && (
             <div className="space-y-2 my-3">
-              <div className="rounded-md bg-blue-50 dark:bg-blue-950 p-3 text-sm">
-                <p className="font-medium text-blue-900 dark:text-blue-100 mb-1">
+              <div className="rounded-md bg-muted p-3 text-sm">
+                <p className="font-medium mb-1">
                   Variante: Persistente y Lazy
                 </p>
-                <p className="text-xs text-blue-800 dark:text-blue-200">
+                <p className="text-xs text-muted-foreground">
                   Implementación con persistencia entre escenas
                   (DontDestroyOnLoad) y creación perezosa. Ideal para managers
                   que deben existir durante todo el ciclo de vida del juego.
@@ -80,11 +80,11 @@ export function UsageInfo({
 
           {singletonVariant === "generic" && (
             <div className="space-y-2 my-3">
-              <div className="rounded-md bg-blue-50 dark:bg-blue-950 p-3 text-sm">
-                <p className="font-medium text-blue-900 dark:text-blue-100 mb-1">
+              <div className="rounded-md bg-muted p-3 text-sm">
+                <p className="font-medium mb-1">
                   Variante: Genérico Reutilizable
                 </p>
-                <p className="text-xs text-blue-800 dark:text-blue-200">
+                <p className="text-xs text-muted-foreground">
                   Clase base genérica que puedes reutilizar para crear múltiples
                   singletons. Genera dos archivos: la clase base Singleton
                   {`<T>`} y tu implementación concreta.
@@ -202,7 +202,7 @@ void Update() {
 
           {objectPoolVariant === "custom" && (
             <div className="space-y-2 my-3">
-              <div className="rounded-md bg-blue-50 dark:bg-blue-950 p-3 text-sm">
+              <div className="rounded-md bg-muted p-3 text-sm">
                 <p className="font-medium mb-1">Pool Custom con Stack</p>
                 <p className="text-xs">
                   Implementación mínima usando Stack{`<T>`}. Ideal para
@@ -223,7 +223,7 @@ void Update() {
 
           {objectPoolVariant === "generic" && (
             <div className="space-y-2 my-3">
-              <div className="rounded-md bg-blue-50 dark:bg-blue-950 p-3 text-sm">
+              <div className="rounded-md bg-muted p-3 text-sm">
                 <p className="font-medium mb-1">
                   Pool Genérico con UnityEngine.Pool
                 </p>

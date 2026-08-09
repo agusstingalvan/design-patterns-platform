@@ -11,7 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
 import { Gamepad2 } from "lucide-react";
 import {
   SingletonConfig,
@@ -167,11 +166,11 @@ export default function GeneratorPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col px-4 overflow-hidden">
+    <div className="flex h-screen flex-col overflow-hidden bg-black">
       <SiteHeader />
-      <main className="flex-1">
-        <div className="container py-6">
-          <div className="flex flex-col gap-4">
+      <main className="min-h-0 flex-1 bg-black">
+        <div className="container h-full py-6">
+          <div className="flex h-full flex-col gap-4">
             {/* <div className="flex flex-col gap-2">
               <h1 className="text-3xl font-bold tracking-tight">
                 Generador de Código
@@ -180,8 +179,8 @@ export default function GeneratorPage() {
                 Genera código de patrones de diseño personalizado para tu motor de juego
               </p>
             </div> */}
-            <div className="grid gap-6 md:grid-cols-2">
-              <Card className="h-[calc(100vh-210px)] overflow-y-scroll">
+            <div className="grid min-h-0 flex-1 gap-6 md:grid-cols-2">
+              <Card className="min-h-0 overflow-y-auto">
                 <CardContent className="p-6">
                   <div className="space-y-4">
                     <div className="space-y-2">
@@ -268,7 +267,7 @@ export default function GeneratorPage() {
                 </CardContent>
               </Card>
 
-              <Card className="h-[calc(100vh-210px)] overflow-y-scroll relative">
+              <Card className="relative min-h-0 overflow-y-auto">
                 <CardContent className="p-0">
                   <CodeViewer
                     generatedFiles={generatedFiles}
@@ -291,7 +290,6 @@ export default function GeneratorPage() {
           </div>
         </div>
       </main>
-      <SiteFooter />
     </div>
   );
 }

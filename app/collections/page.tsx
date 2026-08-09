@@ -26,8 +26,8 @@ export default async function CollectionsPage() {
     ? profile.teams[0]
     : profile?.teams;
 
-  // Get projects (user's private projects + team's shared projects)
-  const { data: projects } = await supabase
+  // Get the user's projects, plus shared projects from their current team.
+  let projectsQuery = supabase
     .from("projects")
     .select(
       `
@@ -37,11 +37,24 @@ export default async function CollectionsPage() {
       created_at,
       patterns(id, category_id, pattern, categories(name))
     `
-    )
-    .or(
-      `and(team_id.is.null,shared.eq.false),and(team_id.eq.${profile?.team_id},shared.eq.true)`
-    )
-    .order("created_at", { ascending: false });
+    );
+
+  if (profile?.team_id) {
+    projectsQuery = projectsQuery.or(
+      `user_id.eq.${user.id},and(team_id.eq.${profile.team_id},shared.eq.true)`
+    );
+  } else {
+    projectsQuery = projectsQuery.eq("user_id", user.id);
+  }
+
+  const { data: projects, error: projectsError } = await projectsQuery.order(
+    "created_at",
+    { ascending: false }
+  );
+
+  if (projectsError) {
+    console.error("Projects error:", projectsError);
+  }
 
   return (
     <CollectionsClient
