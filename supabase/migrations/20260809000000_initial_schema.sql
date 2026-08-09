@@ -47,6 +47,8 @@ create table public.patterns (
 
 create index projects_user_id_created_at_idx on public.projects (user_id, created_at desc);
 create index projects_team_id_created_at_idx on public.projects (team_id, created_at desc) where shared;
+create index teams_owner_id_idx on public.teams (owner_id);
+create index patterns_category_id_idx on public.patterns (category_id);
 create index patterns_project_id_idx on public.patterns (project_id);
 create index patterns_user_id_idx on public.patterns (user_id);
 create index patterns_team_id_idx on public.patterns (team_id) where team_id is not null;
@@ -158,6 +160,8 @@ $$;
 
 revoke all on function public.handle_new_user() from public;
 revoke all on function public.invite_collaborator(text) from public;
+revoke execute on function public.handle_new_user() from anon, authenticated;
+revoke execute on function public.invite_collaborator(text) from anon, authenticated;
 grant execute on function public.invite_collaborator(text) to authenticated;
 
 alter table public.categories enable row level security;
