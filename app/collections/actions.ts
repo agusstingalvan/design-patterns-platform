@@ -35,7 +35,7 @@ export async function createTeam(teamName: string) {
     // Create team
     const { data: team, error: teamError } = await supabase
       .from("teams")
-      .insert({ name: teamName })
+      .insert({ name: teamName, owner_id: user.id })
       .select()
       .single();
 
@@ -89,41 +89,10 @@ export async function inviteCollaborator(email: string) {
       return { error: "No perteneces a un equipo" };
     }
 
-    // Find the collaborator by email
-    const { data: collaboratorUser, error: collaboratorUserError } =
-      await supabase.rpc("get_user_by_email", { email_param: email });
-
-    if (collaboratorUserError || !collaboratorUser) {
-      return {
-        error:
-          "No se encontró un usuario con ese email. El usuario debe estar registrado.",
-      };
-    }
-
-    // Check if collaborator already has a team
-    const { data: collaboratorProfile, error: collaboratorProfileError } =
-      await supabase
-        .from("profiles")
-        .select("team_id")
-        .eq("user_id", collaboratorUser.id)
-        .single();
-
-    if (
-      collaboratorProfileError &&
-      collaboratorProfileError.code !== "PGRST116"
-    ) {
-      return { error: "Error al verificar el perfil del colaborador" };
-    }
-
-    if (collaboratorProfile?.team_id) {
-      return { error: "Este usuario ya pertenece a un equipo" };
-    }
-
-    // Add collaborator to team
-    const { error: updateError } = await supabase
-      .from("profiles")
-      .update({ team_id: profile.team_id })
-      .eq("user_id", collaboratorUser.id);
+    // RPC performs lookup and assignment atomically without exposing auth.users.
+    const { error: updateError } = await supabase.rpc("invite_collaborator", {
+      email_param: email,
+    });
 
     if (updateError) {
       console.error("Update error:", updateError);

@@ -59,6 +59,7 @@ export async function savePattern({
     const { data: project, error: projectError } = await supabase
       .from("projects")
       .insert({
+        user_id: user.id,
         name: projectName,
         shared: isShared,
         team_id: isShared && profile?.team_id ? profile.team_id : null,
