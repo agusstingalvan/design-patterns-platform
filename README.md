@@ -1,11 +1,17 @@
 # Design Patterns Platform - Generador de Código
 
-![Next.js](https://img.shields.io/badge/Next.js-15.2.4-black)
+![Next.js](https://img.shields.io/badge/Next.js-16.3.0-black)
 ![React](https://img.shields.io/badge/React-19-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38bdf8)
 
 Una plataforma web interactiva para generar código de patrones de diseño personalizados para Unity (C#). Acelera tu desarrollo de videojuegos con plantillas configurables y código listo para usar.
+
+## 🌐 Pruébalo en vivo
+
+👉 [Abrir Design Patterns Platform](https://game-design-patterns-gamedev.vercel.app/)
+
+Entra, genera patrones y finge que escribiste todo ese código a mano.
 
 ## 🎯 ¿Qué es este proyecto?
 
@@ -96,7 +102,7 @@ Reutiliza objetos pre-inicializados para optimizar rendimiento.
 ### Requisitos previos
 
 - Node.js 18+ 
-- npm, pnpm o yarn
+- npm
 
 ### Instalación
 
@@ -106,16 +112,12 @@ git clone https://github.com/agusstingalvan/design-patterns-platform.git
 cd design-patterns-platform
 
 # Instalar dependencias
-pnpm install
-# o
 npm install
 ```
 
 ### Ejecutar en desarrollo
 
 ```bash
-pnpm dev
-# o
 npm run dev
 ```
 
@@ -189,7 +191,7 @@ design-patterns-platform/
 
 ## 🛠️ Tecnologías Utilizadas
 
-- **[Next.js 15](https://nextjs.org/)** - Framework React con App Router
+- **[Next.js 16](https://nextjs.org/)** - Framework React con App Router
 - **[React 19](https://react.dev/)** - Biblioteca de UI
 - **[TypeScript](https://www.typescriptlang.org/)** - Tipado estático
 - **[Tailwind CSS](https://tailwindcss.com/)** - Estilos utility-first
