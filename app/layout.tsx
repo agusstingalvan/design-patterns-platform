@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     "design patterns",
     "desarrollo de videojuegos",
     "Singleton",
-    "Object Pool",
+    "Flyweight",
     "State Machine",
   ],
   authors: [{ name: "Agustin Galvan", url: "https://agustingalvan.netlify.app/" }],

@@ -8,11 +8,10 @@ interface State {
 }
 
 interface UsageInfoProps {
-  pattern: "singleton" | "state" | "object-pool";
+  pattern: "singleton" | "state" | "flyweight";
   className: string;
   states?: State[];
   singletonVariant?: "minimal" | "persistent" | "generic";
-  objectPoolVariant?: "custom" | "generic";
 }
 
 export function UsageInfo({
@@ -20,7 +19,6 @@ export function UsageInfo({
   className,
   states = [],
   singletonVariant = "minimal",
-  objectPoolVariant = "generic",
 }: UsageInfoProps) {
   const generateDiagramUrl = () => {
     const params = new URLSearchParams();
@@ -138,7 +136,7 @@ void Start() {
               <li>Sistemas de Audio (AudioManager)</li>
               <li>Gestores de Entrada (InputManager)</li>
               <li>Sistemas de Guardado/Carga (SaveManager)</li>
-              <li>Pool de Objetos (ObjectPoolManager)</li>
+              <li>Catálogos compartidos de recursos</li>
             </ul>
           </div>
         </>
@@ -192,112 +190,43 @@ void Update() {
         </>
       )}
 
-      {pattern === "object-pool" && (
+      {pattern === "flyweight" && (
         <>
           <p className="text-sm text-muted-foreground">
-            El patrón Object Pool optimiza el rendimiento reutilizando objetos
-            pre-inicializados en lugar de crear y destruir instancias
-            continuamente.
+            Flyweight comparte información común entre objetos similares para
+            reducir la duplicación de estado.
           </p>
-
-          {objectPoolVariant === "custom" && (
-            <div className="space-y-2 my-3">
-              <div className="rounded-md bg-muted p-3 text-sm">
-                <p className="font-medium mb-1">Pool Custom con Stack</p>
-                <p className="text-xs">
-                  Implementación mínima usando Stack{`<T>`}. Ideal para
-                  proyectos sin dependencias adicionales.
-                </p>
-              </div>
-              <h4 className="font-medium text-sm mt-4">
-                Pasos de Implementación:
-              </h4>
-              <ol className="list-decimal list-inside text-sm text-muted-foreground space-y-1">
-                <li>Asigna el prefab de Pooled{className} en el Inspector</li>
-                <li>Configura el tamaño inicial del pool (initPoolSize)</li>
-                <li>Usa pool.Get() para obtener instancias</li>
-                <li>Llama a instance.Release() para devolver al pool</li>
-              </ol>
+          <div className="space-y-2 my-3">
+            <div className="rounded-md bg-muted p-3 text-sm">
+              <p className="font-medium mb-1">Estado intrínseco y extrínseco</p>
+              <p className="text-xs">Flyweight contiene tipo, mesh, material, color y otros datos compartidos e inmutables. Context contiene posición, rotación, dirección, vida y velocidad de cada entidad.</p>
             </div>
-          )}
-
-          {objectPoolVariant === "generic" && (
-            <div className="space-y-2 my-3">
-              <div className="rounded-md bg-muted p-3 text-sm">
-                <p className="font-medium mb-1">
-                  Pool Genérico con UnityEngine.Pool
-                </p>
-                <p className="text-xs">
-                  Implementación con la API oficial de Unity. Ofrece más
-                  configuración y control del ciclo de vida.
-                </p>
-              </div>
-              <h4 className="font-medium text-sm mt-4">
-                Pasos de Implementación:
-              </h4>
-              <ol className="list-decimal list-inside text-sm text-muted-foreground space-y-1">
-                <li>Implementa IPooledWithRef{`<T>`} en tu objeto pooleable</li>
-                <li>
-                  Asigna el prefab en {className}Pool{`<T>`}
-                </li>
-                <li>
-                  Configura defaultCapacity y maxSize según tus necesidades
-                </li>
-                <li>
-                  Usa pool.Get() para obtener y pool.Release() para devolver
-                </li>
-                <li>
-                  Opcionalmente implementa auto-release llamando a Release()
-                  internamente
-                </li>
-              </ol>
-            </div>
-          )}
+            <h4 className="font-medium text-sm mt-4">Pasos de Implementación:</h4>
+            <ol className="list-decimal list-inside text-sm text-muted-foreground space-y-1">
+              <li>Crea una factoría por tipo de recurso compartido</li>
+              <li>Obtén el Flyweight usando una clave estable</li>
+              <li>Crea un Context por entidad con su estado extrínseco</li>
+            </ol>
+          </div>
 
           <div className="mt-4 rounded-md bg-muted p-3">
             <h4 className="font-medium text-sm mb-2">Ejemplo de Uso:</h4>
-            <pre className="text-xs overflow-x-auto bg-background p-2 rounded">
-              {objectPoolVariant === "custom"
-                ? `// En tu script de spawner/arma
-[SerializeField] private ${className}Pool pool;
+            <pre className="text-xs overflow-x-auto bg-background p-2 rounded">{`var factory = new ${className}FlyweightFactory();
+var flyweight = factory.GetFlyweight("Oak", "Mesh y material de roble");
 
-void Shoot()
-{
-    Pooled${className} item = pool.Get();
-    item.transform.position = spawnPoint.position;
-    // Configurar velocidad, dirección, etc.
-}
-
-// En Pooled${className}.cs cuando debe destruirse
-void OnBecameInvisible()
-{
-    Release(); // Devuelve al pool
-}`
-                : `// En tu script de spawner/arma
-[SerializeField] private ${className}Pool<Pooled${className}> pool;
-
-void Shoot()
-{
-    Pooled${className} item = pool.Get();
-    item.transform.position = spawnPoint.position;
-    // Configurar velocidad, dirección, etc.
-}
-
-// En Pooled${className}.cs (auto-release)
-void OnBecameInvisible()
-{
-    Release(); // Se devuelve al pool automáticamente
-}`}
-            </pre>
+var entity = new ${className}Context(
+    flyweight,
+    new Vector3(0f, 0f, 0f),
+    Quaternion.identity
+);`}</pre>
           </div>
           <div className="space-y-2 mt-4">
             <h4 className="font-medium text-sm">Casos de Uso Comunes:</h4>
             <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
-              <li>Proyectiles y Balas</li>
-              <li>Efectos de Partículas</li>
-              <li>Enemigos que respawnean</li>
-              <li>Objetos de UI temporales</li>
-              <li>Audio Sources para efectos de sonido</li>
+              <li>Árboles y vegetación repetida</li>
+              <li>Tiles y terreno</li>
+              <li>Enemigos con recursos visuales comunes</li>
+              <li>Iconos y elementos de interfaz repetidos</li>
             </ul>
           </div>
         </>

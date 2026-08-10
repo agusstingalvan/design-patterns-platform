@@ -74,26 +74,18 @@ Permite que un objeto cambie su comportamiento según su estado interno.
 
 ---
 
-#### **3. Object Pool Pattern**
-Reutiliza objetos pre-inicializados para optimizar rendimiento.
+#### **3. Flyweight Pattern**
+Comparte información común entre objetos similares para reducir duplicación de estado.
 
-**Variantes disponibles:**
-- **Custom Stack**: Pool minimalista usando `Stack<T>` sin dependencias
-- **Generic UnityEngine.Pool**: Pool oficial de Unity con más control
-
-**Opciones configurables:**
-- Nombre de la clase base
-- Tamaño inicial del pool
-- Capacidad por defecto y máximo
-- Collection check (validación de duplicados)
-- Incluir clases de ejemplo
+**Estructura generada:**
+- **Flyweight**: tipo, mesh, material, color y estado intrínseco compartido e inmutable
+- **FlyweightFactory**: crea o recupera instancias por clave
+- **Context**: posición, rotación, dirección, vida y velocidad por entidad
 
 **Casos de uso:**
-- Proyectiles y balas
-- Efectos de partículas
-- Enemigos
-- UI temporal
-- Audio sources
+- Vegetación y terreno
+- Tiles y elementos de interfaz repetidos
+- Entidades con recursos visuales comunes
 
 ---
 
@@ -134,14 +126,14 @@ Navega a la página del generador en tu navegador local o en la versión despleg
 Elige entre:
 - **Singleton**
 - **State Machine** 
-- **Object Pool**
+- **Flyweight**
 
 ### 3. Configura el Patrón
 
 **Panel izquierdo (Configuración):**
 - Define el nombre de tu clase principal
 - Selecciona la variante del patrón
-- Ajusta opciones específicas (persistencia, estados, tamaño del pool, etc.)
+- Ajusta opciones específicas (persistencia, estados, estado compartido, etc.)
 - Añade o quita callbacks personalizados
 
 ### 4. Visualiza el Código
@@ -184,7 +176,7 @@ design-patterns-platform/
 │   ├── generators/
 │   │   ├── singleton.ts         # Generador de Singleton
 │   │   ├── state.ts            # Generador de State Machine
-│   │   └── object-pool.ts      # Generador de Object Pool
+│   │   └── flyweight.ts        # Generador de Flyweight
 │   └── utils.ts
 └── public/
 ```
@@ -285,24 +277,20 @@ public void Update()
 }
 ```
 
-### Object Pool
+### Flyweight
 
 **Archivos generados:**
-- `{ClassName}Pool.cs`
-- `Pooled{ClassName}.cs`
-- `IPooledWithRef.cs` (solo en variante genérica)
-- Archivos de ejemplo (opcional)
+- `{ClassName}Flyweight.cs`
+- `{ClassName}FlyweightFactory.cs`
+- `{ClassName}Context.cs`
 - `README.md`
 
 **Ejemplo de uso:**
 
 ```csharp
-// Obtener del pool
-Pooled{ClassName} item = pool.Get();
-item.transform.position = spawnPoint.position;
-
-// Devolver al pool
-item.Release();
+var factory = new {ClassName}FlyweightFactory();
+var flyweight = factory.GetFlyweight("key", "estado compartido");
+var entity = new {ClassName}Context(flyweight, Vector3.zero, Quaternion.identity);
 ```
 
 ## 📊 Ventajas del Generador
@@ -320,7 +308,7 @@ item.Release();
 - **Consistencia**: Mismo estilo de código en todo el proyecto
 - **Mantenibilidad**: Código estructurado y documentado
 - **Escalabilidad**: Patrones probados y reutilizables
-- **Optimización**: Object Pool mejora rendimiento
+- **Optimización**: Flyweight reduce duplicación de estado
 
 ## 🤝 Contribuciones
 

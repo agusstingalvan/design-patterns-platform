@@ -15,16 +15,16 @@ import { Gamepad2 } from "lucide-react";
 import {
   SingletonConfig,
   StateConfig,
-  ObjectPoolConfig,
+  FlyweightConfig,
 } from "@/components/generator/PatternConfiguration";
 import { CodeViewer } from "@/components/generator/CodeViewer";
 import { UsageInfo } from "@/components/generator/UsageInfo";
 import { generateSingletonCode } from "@/lib/generators/singleton";
 import { generateStateCode } from "@/lib/generators/state";
-import { generateObjectPoolCode } from "@/lib/generators/object-pool";
+import { generateFlyweightCode } from "@/lib/generators/flyweight";
 
 export default function GeneratorPage() {
-  const [pattern, setPattern] = useState<"singleton" | "state" | "object-pool">(
+  const [pattern, setPattern] = useState<"singleton" | "state" | "flyweight">(
     "singleton"
   );
   const [className, setClassName] = useState("GameManager");
@@ -88,15 +88,18 @@ export default function GeneratorPage() {
     },
   ]);
 
-  // Object Pool pattern options
-  const [objectPoolVariant, setObjectPoolVariant] = useState<
-    "custom" | "generic"
-  >("generic");
-  const [initPoolSize, setInitPoolSize] = useState(10);
-  const [defaultCapacity, setDefaultCapacity] = useState(20);
-  const [maxSize, setMaxSize] = useState(100);
-  const [collectionCheck, setCollectionCheck] = useState(true);
-  const [includeExample, setIncludeExample] = useState(true);
+  // Flyweight pattern options
+  const [flyweightKey, setFlyweightKey] = useState("Oak");
+  const [intrinsicState, setIntrinsicState] = useState("Mesh y material de roble");
+  const [sharedType, setSharedType] = useState("Vegetación");
+  const [meshName, setMeshName] = useState("OakMesh");
+  const [materialName, setMaterialName] = useState("OakMaterial");
+  const [color, setColor] = useState("Verde oscuro");
+  const [initialHealth, setInitialHealth] = useState(100);
+  const [initialSpeed, setInitialSpeed] = useState(2);
+  const [directionX, setDirectionX] = useState(0);
+  const [directionY, setDirectionY] = useState(0);
+  const [directionZ, setDirectionZ] = useState(1);
 
   // Change default className when pattern changes
   useEffect(() => {
@@ -104,8 +107,8 @@ export default function GeneratorPage() {
       setClassName("GameManager");
     } else if (pattern === "state") {
       setClassName("EnemyExample");
-    } else if (pattern === "object-pool") {
-      setClassName("Projectile");
+    } else if (pattern === "flyweight") {
+      setClassName("Tree");
     }
   }, [pattern]);
 
@@ -122,12 +125,17 @@ export default function GeneratorPage() {
     includeController,
     stateCallbackMethods,
     states,
-    objectPoolVariant,
-    initPoolSize,
-    defaultCapacity,
-    maxSize,
-    collectionCheck,
-    includeExample,
+    flyweightKey,
+    intrinsicState,
+    sharedType,
+    meshName,
+    materialName,
+    color,
+    initialHealth,
+    initialSpeed,
+    directionX,
+    directionY,
+    directionZ,
   ]);
 
   const generateCode = () => {
@@ -150,15 +158,20 @@ export default function GeneratorPage() {
       });
       setGeneratedFiles(files);
       setFileNames(names);
-    } else if (pattern === "object-pool") {
-      const { files, names } = generateObjectPoolCode({
+    } else if (pattern === "flyweight") {
+      const { files, names } = generateFlyweightCode({
         className,
-        variant: objectPoolVariant,
-        initPoolSize,
-        defaultCapacity,
-        maxSize,
-        collectionCheck,
-        includeExample,
+        key: flyweightKey,
+        intrinsicState,
+        sharedType,
+        meshName,
+        materialName,
+        color,
+        initialHealth,
+        initialSpeed,
+        directionX,
+        directionY,
+        directionZ,
       });
       setGeneratedFiles(files);
       setFileNames(names);
@@ -188,7 +201,7 @@ export default function GeneratorPage() {
                       <Select
                         value={pattern}
                         onValueChange={(
-                          value: "singleton" | "state" | "object-pool"
+                           value: "singleton" | "state" | "flyweight"
                         ) => setPattern(value)}
                       >
                         <SelectTrigger id="pattern">
@@ -207,10 +220,10 @@ export default function GeneratorPage() {
                               <span>State Machine</span>
                             </div>
                           </SelectItem>
-                          <SelectItem value="object-pool">
+                          <SelectItem value="flyweight">
                             <div className="flex items-center">
                               <Gamepad2 className="mr-2 h-4 w-4" />
-                              <span>Object Pool</span>
+                              <span>Flyweight</span>
                             </div>
                           </SelectItem>
                         </SelectContent>
@@ -245,22 +258,32 @@ export default function GeneratorPage() {
                       />
                     )}
 
-                    {pattern === "object-pool" && (
-                      <ObjectPoolConfig
+                    {pattern === "flyweight" && (
+                      <FlyweightConfig
                         className={className}
-                        variant={objectPoolVariant}
-                        initPoolSize={initPoolSize}
-                        defaultCapacity={defaultCapacity}
-                        maxSize={maxSize}
-                        collectionCheck={collectionCheck}
-                        includeExample={includeExample}
+                        flyweightKey={flyweightKey}
+                        intrinsicState={intrinsicState}
+                        sharedType={sharedType}
+                        meshName={meshName}
+                        materialName={materialName}
+                        color={color}
+                        initialHealth={initialHealth}
+                        initialSpeed={initialSpeed}
+                        directionX={directionX}
+                        directionY={directionY}
+                        directionZ={directionZ}
                         onClassNameChange={setClassName}
-                        onVariantChange={setObjectPoolVariant}
-                        onInitPoolSizeChange={setInitPoolSize}
-                        onDefaultCapacityChange={setDefaultCapacity}
-                        onMaxSizeChange={setMaxSize}
-                        onCollectionCheckChange={setCollectionCheck}
-                        onIncludeExampleChange={setIncludeExample}
+                        onFlyweightKeyChange={setFlyweightKey}
+                        onIntrinsicStateChange={setIntrinsicState}
+                        onSharedTypeChange={setSharedType}
+                        onMeshNameChange={setMeshName}
+                        onMaterialNameChange={setMaterialName}
+                        onColorChange={setColor}
+                        onInitialHealthChange={setInitialHealth}
+                        onInitialSpeedChange={setInitialSpeed}
+                        onDirectionXChange={setDirectionX}
+                        onDirectionYChange={setDirectionY}
+                        onDirectionZChange={setDirectionZ}
                       />
                     )}
                   </div>
@@ -280,7 +303,6 @@ export default function GeneratorPage() {
                         className={className}
                         states={states}
                         singletonVariant={singletonVariant}
-                        objectPoolVariant={objectPoolVariant}
                       />
                     }
                   />

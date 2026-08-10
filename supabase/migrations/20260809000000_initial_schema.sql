@@ -55,7 +55,7 @@ create index patterns_team_id_idx on public.patterns (team_id) where team_id is 
 create index profiles_team_id_idx on public.profiles (team_id) where team_id is not null;
 
 insert into public.categories (name)
-values ('state'), ('singleton'), ('object-pool')
+values ('state'), ('singleton'), ('flyweight')
 on conflict (name) do nothing;
 
 create or replace function private.current_user_team_id()

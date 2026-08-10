@@ -26,11 +26,11 @@ const patterns = [
     detail: "Una instancia, un punto de acceso claro.",
   },
   {
-    name: "Object Pool",
+    name: "Flyweight",
     category: "Estructural",
     icon: Layers3,
-    use: "Proyectiles, enemigos y efectos que vuelven a aparecer.",
-    detail: "Reutiliza objetos para evitar trabajo repetido.",
+    use: "Vegetación, tiles y enemigos con recursos visuales comunes.",
+    detail: "Comparte estado común y evita duplicarlo por entidad.",
   },
   {
     name: "State Machine",
@@ -135,7 +135,7 @@ export default function Home() {
           <div className="container grid gap-px px-5 md:grid-cols-3 md:px-8">
             {[
               ["Sin boilerplate", "Elige una estructura probada en vez de partir de una pagina en blanco."],
-              ["Sin perder control", "Personaliza clases, estados, callbacks y capacidades del pool."],
+               ["Sin perder control", "Personaliza clases, estados, callbacks y estado compartido."],
               ["Sin salir del flujo", "Copia, descarga, guarda o crea un Pull Request desde un mismo lugar."],
             ].map(([title, copy]) => (
               <div key={title} className="border-b border-white/10 py-8 last:border-b-0 md:border-b-0 md:border-r md:px-8 md:first:pl-0 md:last:border-r-0">

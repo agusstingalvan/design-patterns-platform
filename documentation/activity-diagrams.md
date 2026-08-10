@@ -39,7 +39,7 @@ Este documento describe los flujos de actividades y procesos de la plataforma, m
                             │ Selecciona patrón   │
                             │ - Singleton         │
                             │ - State Machine     │
-                            │ - Object Pool       │
+                             │ - Flyweight         │
                             └──────┬──────────────┘
                                    │
                     ┌──────────────┴──────────────┐

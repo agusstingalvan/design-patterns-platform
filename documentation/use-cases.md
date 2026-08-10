@@ -20,7 +20,7 @@
 
 **Flujo Principal**:
 1. El desarrollador accede a `/generator`
-2. Selecciona un patrón de diseño (Singleton, State Machine, Object Pool)
+2. Selecciona un patrón de diseño (Singleton, State Machine, Flyweight)
 3. Configura parámetros del patrón (nombre de clase, opciones específicas)
 4. Visualiza código generado en tiempo real
 5. Descarga archivos generados (ZIP o individual)
@@ -80,27 +80,21 @@
 
 ---
 
-### **CU-04: Configurar Patrón Object Pool**
+### **CU-04: Configurar Patrón Flyweight**
 **Actor**: Desarrollador  
-**Precondición**: Patrón Object Pool seleccionado  
-**Postcondición**: Sistema de pooling optimizado generado
+**Precondición**: Patrón Flyweight seleccionado
+**Postcondición**: Implementación con estado compartido generada
 
 **Flujo Principal**:
-1. Desarrollador ingresa nombre de clase (ej: "Projectile")
-2. Selecciona variante (Custom Stack, Generic UnityEngine.Pool)
-3. Configura parámetros:
-   - Tamaño inicial del pool
-   - Capacidad por defecto
-   - Capacidad máxima
-   - Collection check
-4. Decide si incluir clases de ejemplo
-5. Sistema genera archivos del pool
-6. Desarrollador descarga implementación
+1. Desarrollador ingresa nombre de clase (ej: "Tree")
+2. Configura clave, tipo, mesh, material, color y estado intrínseco compartido
+3. Configura vida, velocidad y dirección iniciales del contexto
+4. Sistema genera Flyweight, Factory y Context
+5. Desarrollador descarga implementación
 
 **Flujos Alternativos**:
-- **2a**: Elegir Custom Stack → Sistema genera implementación minimalista
-- **2b**: Elegir Generic Pool → Sistema usa UnityEngine.Pool oficial
-- **4a**: Incluir ejemplos → Sistema agrega clases de uso
+- **2a**: Cambiar clave → La Factory gestiona otro recurso compartido
+- **3a**: Cambiar vida o velocidad → Sistema actualiza valores del Context
 
 ---
 
@@ -271,7 +265,7 @@
 **Flujos Alternativos**:
 - **2a**: Patrón Singleton → Muestra cómo acceder a la instancia
 - **2b**: State Machine → Muestra cómo hacer transiciones
-- **2c**: Object Pool → Muestra Get() y Release()
+- **2c**: Flyweight → Muestra estado intrínseco y extrínseco
 
 ---
 
@@ -312,18 +306,17 @@
 
 ---
 
-### **HU-03: Object Pool para Optimización**
+### **HU-03: Flyweight para Estado Compartido**
 **Como** desarrollador técnico  
-**Quiero** implementar un pool de proyectiles  
-**Para** optimizar el rendimiento de mi juego
+**Quiero** compartir recursos entre árboles similares
+**Para** reducir la duplicación de estado en mi juego
 
 **Criterios de Aceptación**:
-- [ ] Puedo configurar tamaño inicial
-- [ ] Puedo configurar capacidad máxima
-- [ ] Puedo elegir entre implementación custom o generic
-- [ ] Se genera clase Pool completa
-- [ ] Se incluyen ejemplos de uso
-- [ ] El código sigue best practices de Unity
+- [ ] Puedo configurar clave y estado intrínseco
+- [ ] Se genera una Factory que recupera por clave
+- [ ] Se genera un Context con estado extrínseco
+- [ ] El código incluye ejemplo de uso
+- [ ] El código usa tipos Unity para posición y rotación
 
 **Prioridad**: Media  
 **Estimación**: 2 puntos
@@ -646,7 +639,7 @@ Usuario         Dialog         GitHub Actions    GitHub API
 - El sistema DEBE permitir configurar variantes de cada patrón
 - El sistema DEBE permitir activar/desactivar callbacks de Unity
 - El sistema DEBE permitir agregar estados personalizados (State Machine)
-- El sistema DEBE validar parámetros numéricos (Object Pool)
+- El sistema DEBE validar parámetros numéricos de vida, velocidad y dirección (Flyweight)
 
 ### RF-03: Descarga de Archivos
 - El sistema DEBE permitir descargar archivos individuales

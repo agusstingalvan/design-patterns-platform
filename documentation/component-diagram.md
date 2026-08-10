@@ -73,7 +73,7 @@ Este documento describe la arquitectura modular de la plataforma web de generaci
 │  │ Pattern Selector     │────────▶│ Pattern Config       │     │
 │  │ - Singleton          │         │ - Form Controls      │     │
 │  │ - State Machine      │         │ - Validators         │     │
-│  │ - Object Pool        │         │ - Options            │     │
+│  │ - Flyweight          │         │ - Options            │     │
 │  └──────────────────────┘         └──────────────────────┘     │
 │           │                                 │                   │
 │           │                                 ▼                   │
@@ -89,7 +89,7 @@ Este documento describe la arquitectura modular de la plataforma web de generaci
 │                  │  Code Generator    │                         │
 │                  │  - singleton.ts    │                         │
 │                  │  - state.ts        │                         │
-│                  │  - object-pool.ts  │                         │
+│                  │  - flyweight.ts    │                         │
 │                  └────────────────────┘                         │
 │                             │                                   │
 │                             ▼                                   │
@@ -150,12 +150,12 @@ Este documento describe la arquitectura modular de la plataforma web de generaci
 │                       └─────────────────┘             │
 │                                                         │
 │  ┌─────────────────┐  ┌─────────────────┐             │
-│  │ object-pool.ts  │  │   README.md     │             │
+│  │ flyweight.ts    │  │   README.md     │             │
 │  │                 │  │   Generator     │             │
 │  │ ┌─────────────┐ │  │                 │             │
-│  │ │ Custom Stack│ │  │ - Usage guide   │             │
-│  │ │ Generic Pool│ │  │ - Examples      │             │
-│  │ │ Examples    │ │  │ - Setup steps   │             │
+│  │ │ Flyweight   │ │  │ - Usage guide   │             │
+│  │ │ Factory     │ │  │ - Examples      │             │
+│  │ │ Context     │ │  │ - Setup steps   │             │
 │  │ └─────────────┘ │  └─────────────────┘             │
 │  └─────────────────┘                                   │
 │                                                         │

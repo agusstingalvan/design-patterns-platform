@@ -1,7 +1,7 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -13,7 +13,6 @@ import { Plus, Minus } from "lucide-react";
 import { CallbackMethodsConfig, CallbackMethod } from "./CallbackMethodsConfig";
 
 type SingletonVariant = "minimal" | "persistent" | "generic";
-type ObjectPoolVariant = "custom" | "generic";
 
 interface SingletonConfigProps {
   className: string;
@@ -292,39 +291,59 @@ export function StateConfig({
   );
 }
 
-interface ObjectPoolConfigProps {
+interface FlyweightConfigProps {
   className: string;
-  variant: ObjectPoolVariant;
-  initPoolSize: number;
-  defaultCapacity: number;
-  maxSize: number;
-  collectionCheck: boolean;
-  includeExample: boolean;
+  flyweightKey: string;
+  intrinsicState: string;
+  sharedType: string;
+  meshName: string;
+  materialName: string;
+  color: string;
+  initialHealth: number;
+  initialSpeed: number;
+  directionX: number;
+  directionY: number;
+  directionZ: number;
   onClassNameChange: (value: string) => void;
-  onVariantChange: (value: ObjectPoolVariant) => void;
-  onInitPoolSizeChange: (value: number) => void;
-  onDefaultCapacityChange: (value: number) => void;
-  onMaxSizeChange: (value: number) => void;
-  onCollectionCheckChange: (value: boolean) => void;
-  onIncludeExampleChange: (value: boolean) => void;
+  onFlyweightKeyChange: (value: string) => void;
+  onIntrinsicStateChange: (value: string) => void;
+  onSharedTypeChange: (value: string) => void;
+  onMeshNameChange: (value: string) => void;
+  onMaterialNameChange: (value: string) => void;
+  onColorChange: (value: string) => void;
+  onInitialHealthChange: (value: number) => void;
+  onInitialSpeedChange: (value: number) => void;
+  onDirectionXChange: (value: number) => void;
+  onDirectionYChange: (value: number) => void;
+  onDirectionZChange: (value: number) => void;
 }
 
-export function ObjectPoolConfig({
+export function FlyweightConfig({
   className,
-  variant,
-  initPoolSize,
-  defaultCapacity,
-  maxSize,
-  collectionCheck,
-  includeExample,
+  flyweightKey,
+  intrinsicState,
+  sharedType,
+  meshName,
+  materialName,
+  color,
+  initialHealth,
+  initialSpeed,
+  directionX,
+  directionY,
+  directionZ,
   onClassNameChange,
-  onVariantChange,
-  onInitPoolSizeChange,
-  onDefaultCapacityChange,
-  onMaxSizeChange,
-  onCollectionCheckChange,
-  onIncludeExampleChange,
-}: ObjectPoolConfigProps) {
+  onFlyweightKeyChange,
+  onIntrinsicStateChange,
+  onSharedTypeChange,
+  onMeshNameChange,
+  onMaterialNameChange,
+  onColorChange,
+  onInitialHealthChange,
+  onInitialSpeedChange,
+  onDirectionXChange,
+  onDirectionYChange,
+  onDirectionZChange,
+}: FlyweightConfigProps) {
   return (
     <>
       <div className="space-y-2">
@@ -333,150 +352,76 @@ export function ObjectPoolConfig({
           id="class-name"
           value={className}
           onChange={(e) => onClassNameChange(e.target.value)}
-          placeholder="ej. Projectile, Bullet, Effect"
+          placeholder="ej. Tree, EnemyVisual, TerrainTile"
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="pool-variant">Variante de Object Pool</Label>
-        <Select value={variant} onValueChange={onVariantChange}>
-          <SelectTrigger id="pool-variant">
-            <SelectValue placeholder="Seleccionar variante" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="custom">
-              <div className="flex flex-col items-start">
-                <span className="font-medium">Custom Stack</span>
-                <span className="text-xs text-muted-foreground">
-                  Pool mínimo con Stack (sin dependencias)
-                </span>
-              </div>
-            </SelectItem>
-            <SelectItem value="generic">
-              <div className="flex flex-col items-start">
-                <span className="font-medium">Generic UnityEngine.Pool</span>
-                <span className="text-xs text-muted-foreground">
-                  Pool genérico con API de Unity
-                </span>
-              </div>
-            </SelectItem>
-          </SelectContent>
-        </Select>
+        <Label htmlFor="flyweight-key">Clave del Flyweight</Label>
+        <Input
+          id="flyweight-key"
+          value={flyweightKey}
+          onChange={(e) => onFlyweightKeyChange(e.target.value)}
+          placeholder="ej. Oak"
+        />
       </div>
 
-      {variant === "custom" && (
-        <div className="pt-2">
-          <h3 className="font-medium mb-2">Configuración de Pool Custom</h3>
-          <div className="space-y-2">
-            <div>
-              <Label htmlFor="init-pool-size" className="text-sm">
-                Tamaño Inicial del Pool
-              </Label>
-              <Input
-                id="init-pool-size"
-                type="number"
-                min="1"
-                value={initPoolSize}
-                onChange={(e) =>
-                  onInitPoolSizeChange(parseInt(e.target.value) || 10)
-                }
-                className="mt-1"
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                Cantidad de objetos pre-inicializados
-              </p>
-            </div>
-          </div>
+      <div className="space-y-2">
+        <Label htmlFor="intrinsic-state">Estado Intrínseco Compartido</Label>
+        <Input
+          id="intrinsic-state"
+          value={intrinsicState}
+          onChange={(e) => onIntrinsicStateChange(e.target.value)}
+          placeholder="ej. Mesh y material de roble"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="shared-type">Tipo Compartido</Label>
+        <Input id="shared-type" value={sharedType} onChange={(e) => onSharedTypeChange(e.target.value)} placeholder="ej. Vegetación" />
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <div className="space-y-2">
+          <Label htmlFor="mesh-name">Mesh Compartido</Label>
+          <Input id="mesh-name" value={meshName} onChange={(e) => onMeshNameChange(e.target.value)} placeholder="ej. OakMesh" />
         </div>
-      )}
-
-      {variant === "generic" && (
-        <div className="pt-2">
-          <h3 className="font-medium mb-2">
-            Configuración de Pool Genérico
-          </h3>
-          <div className="space-y-3">
-            <div>
-              <Label htmlFor="default-capacity" className="text-sm">
-                Capacidad por Defecto
-              </Label>
-              <Input
-                id="default-capacity"
-                type="number"
-                min="1"
-                value={defaultCapacity}
-                onChange={(e) =>
-                  onDefaultCapacityChange(parseInt(e.target.value) || 20)
-                }
-                className="mt-1"
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                Capacidad inicial del pool
-              </p>
-            </div>
-
-            <div>
-              <Label htmlFor="max-size" className="text-sm">
-                Tamaño Máximo
-              </Label>
-              <Input
-                id="max-size"
-                type="number"
-                min="1"
-                value={maxSize}
-                onChange={(e) =>
-                  onMaxSizeChange(parseInt(e.target.value) || 100)
-                }
-                className="mt-1"
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                Límite máximo de objetos en el pool
-              </p>
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="collection-check"
-                checked={collectionCheck}
-                onCheckedChange={(checked) =>
-                  onCollectionCheckChange(checked === true)
-                }
-              />
-              <Label htmlFor="collection-check" className="text-sm">
-                <span className="font-medium">Collection Check</span>
-                <p className="text-xs text-muted-foreground">
-                  Validación de objetos duplicados (solo en desarrollo)
-                </p>
-              </Label>
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="include-example"
-                checked={includeExample}
-                onCheckedChange={(checked) =>
-                  onIncludeExampleChange(checked === true)
-                }
-              />
-              <Label htmlFor="include-example" className="text-sm">
-                <span className="font-medium">Incluir Ejemplos</span>
-                <p className="text-xs text-muted-foreground">
-                  Generar clases de ejemplo (Pooled{className} y{" "}
-                  {className}Spawner)
-                </p>
-              </Label>
-            </div>
-          </div>
+        <div className="space-y-2">
+          <Label htmlFor="material-name">Material Compartido</Label>
+          <Input id="material-name" value={materialName} onChange={(e) => onMaterialNameChange(e.target.value)} placeholder="ej. OakMaterial" />
         </div>
-      )}
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="shared-color">Color Compartido</Label>
+        <Input id="shared-color" value={color} onChange={(e) => onColorChange(e.target.value)} placeholder="ej. Verde oscuro" />
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <div className="space-y-2">
+          <Label htmlFor="initial-health">Vida Inicial</Label>
+          <Input id="initial-health" type="number" value={initialHealth} onChange={(e) => onInitialHealthChange(Number(e.target.value) || 0)} />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="initial-speed">Velocidad Inicial</Label>
+          <Input id="initial-speed" type="number" value={initialSpeed} onChange={(e) => onInitialSpeedChange(Number(e.target.value) || 0)} />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label>Dirección Inicial</Label>
+        <div className="grid grid-cols-3 gap-3">
+          <Input aria-label="Dirección X" type="number" value={directionX} onChange={(e) => onDirectionXChange(Number(e.target.value) || 0)} placeholder="X" />
+          <Input aria-label="Dirección Y" type="number" value={directionY} onChange={(e) => onDirectionYChange(Number(e.target.value) || 0)} placeholder="Y" />
+          <Input aria-label="Dirección Z" type="number" value={directionZ} onChange={(e) => onDirectionZChange(Number(e.target.value) || 0)} placeholder="Z" />
+        </div>
+      </div>
 
       <div className="pt-2">
         <div className="rounded-md bg-muted p-3 text-sm text-muted-foreground">
-          <p className="font-medium mb-1">Object Pool Pattern</p>
+          <p className="font-medium mb-1">Flyweight Pattern</p>
           <p className="text-xs">
-            {variant === "custom"
-              ? "Pool mínimo usando Stack<T>. Ideal para casos simples sin dependencias adicionales."
-              : "Pool genérico usando UnityEngine.Pool. Ofrece más control y opciones de configuración."}
+            Comparte tipo, recursos visuales y configuración base. Cada contexto conserva posición, rotación, vida, velocidad y dirección propias.
           </p>
         </div>
       </div>

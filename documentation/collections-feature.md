@@ -194,7 +194,7 @@ Sistema completo para gestionar colecciones de patrones, crear equipos y colabor
 INSERT INTO public.categories (name) VALUES
   ('state'),
   ('singleton'),
-  ('object-pool')
+   ('flyweight')
 ON CONFLICT (name) DO NOTHING;
 ```
 
